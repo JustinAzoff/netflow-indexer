@@ -20,7 +20,10 @@ setup(name='netflow-indexer',
       install_requires=[
           # -*- Extra requirements: -*-
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
-      )
+      entry_points = {
+        'console_scripts': [
+            'netflow-index-nfdump     = netflowindexer.indexer.nfdump:main',
+            'netflow-index-flowtools  = netflowindexer.indexer.flowtools:main',
+        ]
+      }
+  )
