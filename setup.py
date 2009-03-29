@@ -4,7 +4,7 @@ import sys, os
 version = '0.1'
 long_description = ""
 
-setup(name='netflow-indexer',
+setup(name='netflowindexer',
       version=version,
       description="Index netflow",
       long_description=long_description,
