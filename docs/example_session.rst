@@ -54,7 +54,7 @@ Search the index for 2009-03-29::
     user    0m0.052s
     sys     0m0.020s
 
-This IP was present in the index in 6 of the 15 hours index, so dumping all the netflow records
+This IP was present in the index for 6 of the 15 hours, so dumping all the netflow records
 will be over twice as fast.
 
 Searching for an IP that does not exist in the index is very fast::
