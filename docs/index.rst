@@ -13,6 +13,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   example_session
+
 Indices and tables
 ==================
 
