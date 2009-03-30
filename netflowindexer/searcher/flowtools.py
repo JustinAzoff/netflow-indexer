@@ -27,7 +27,7 @@ def main():
         ip_filter = "(%s) and (%s)" % (ip_filter, options.filter)
 
     docs = sorted(list(search(db,ips)))
-    if not options.nfdump:
+    if not options.extract:
         for doc in docs:
             print doc
     else:
