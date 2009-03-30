@@ -25,6 +25,7 @@ setup(name='netflowindexer',
             'netflow-index-nfdump     = netflowindexer.indexer.nfdump:main',
             'netflow-index-flowtools  = netflowindexer.indexer.flowtools:main',
             'netflow-search-nfdump    = netflowindexer.searcher.nfdump:main',
+            'netflow-search-flowtools = netflowindexer.searcher.flowtools:main',
         ]
       }
   )
