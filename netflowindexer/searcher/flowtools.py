@@ -32,4 +32,4 @@ def main():
             print doc
     else:
         for doc in docs:
-            os.system("flow-cat %s* | flow-extract -n -e %s {print}" % (doc, ip_filter))
+            os.system("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter))
