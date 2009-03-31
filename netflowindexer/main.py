@@ -37,7 +37,11 @@ def search():
     from optparse import OptionParser
     parser = OptionParser(usage = "usage: %prog -i indexer [searcher_options]")
     parser.add_option("-i", "--indexer", dest="indexer", action="store",
-            help="indexer to use")
+        help="indexer to use")
+    parser.add_option("-d", "--dump", dest="dump", action="store_true", default=False,
+        help="dump the flows, don't just print the filenames")
+    parser.add_option("-f", "--filter", dest="filter", action="store", default='',
+        help="filter to use when dumping flows with the -d option")
 
     (options, args) = parser.parse_args()
     if not options.indexer:

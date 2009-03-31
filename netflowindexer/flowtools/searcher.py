@@ -8,8 +8,8 @@ from netflowindexer.base.searcher import search
 def main():
     from optparse import OptionParser
     parser = OptionParser(usage = "usage: %prog db [options] [ips]")
-    parser.add_option("-d", "--extract", dest="extract", action="store_true", default=None,
-        help="run flow-extract, don't just print the filenames")
+    parser.add_option("-d", "--dump", dest="dump", action="store_true", default=None,
+        help="dump the flows with flow-extract, don't just print the filenames")
     parser.add_option("-f", "--filter", dest="filter", action="store", default='',
         help="filter to use for flow-extract")
 
