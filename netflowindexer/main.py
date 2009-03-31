@@ -29,9 +29,9 @@ def get_searcher(indexer_type):
     searcher = mod.searcher.main
     return searcher
 
-def do_search(indexer_type, *args):
+def do_search(indexer_type, database, ips, dump=None,filter=None):
     searcher = get_searcher(indexer_type)
-    return searcher(*args)
+    return searcher(database, ips, dump, filter)
 
 def search():
     from optparse import OptionParser
@@ -48,4 +48,4 @@ def search():
         parser.print_help()
         return 1
 
-    return do_search(options.indexer, *args)
+    return do_search(options.indexer, args[0], args[1:], options.dump, options.filter)
