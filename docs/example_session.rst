@@ -6,7 +6,7 @@ Indexing data
 
 Tell the netflow indexer to index all the files for 2009-03-29::
 
-    justin@glenn:/data/nfdump_xap$ netflow-index-nfdump /data/nfsen/profiles/live/podium/nfcapd.20090329*
+    justin@glenn:~$ netflow-index-update  -i nfdump  /data/nfdump_xap/ /data/nfsen/profiles/live/podium/nfcapd.20090329*
     * /data/nfsen/profiles/live/podium/nfcapd.2009032900
     * /data/nfsen/profiles/live/podium/nfcapd.2009032901
     * /data/nfsen/profiles/live/podium/nfcapd.2009032902
@@ -38,11 +38,11 @@ Searching the index
 
 Search the index for 2009-03-29::
 
-    justin@glenn:/data/nfdump_xap$ host www.aol.com
+    justin@glenn:~$ host www.aol.com
     ...
     www-east.aol.com.aol.akadns.net A       64.12.168.33
 
-    justin@glenn:/data/nfdump_xap$ netflow-search-nfdump 20090329.db 64.12.168.33
+    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33
     /data/nfsen/profiles/live/podium/nfcapd.2009032905
     /data/nfsen/profiles/live/podium/nfcapd.2009032909
     /data/nfsen/profiles/live/podium/nfcapd.2009032911
@@ -59,8 +59,8 @@ will be over twice as fast.
 
 Searching for an IP that does not exist in the index is very fast::
 
-    justin@glenn:/data/nfdump_xap$ time netflow-search-nfdump 20090329.db 1.2.3.4     
-    real    0m0.081s
+    justin@glenn:~$ time netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 1.2.3.4
+    real    0m0.067s
 
 
 Dumping data
@@ -68,7 +68,7 @@ Dumping data
 
 netflow-search-nfdump supports a -d option which automatically runs nfdump for you::
 
-    justin@glenn:/data/nfdump_xap$ time netflow-search-nfdump 20090329.db 64.12.168.33 -d
+    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d 
     2009-03-29 05:03:54.792     1.260 TCP     xxx.xxx.xx.xxx:3392  ->     64.12.168.33:80    28 3160 1
     2009-03-29 05:03:56.052     0.328 TCP     xxx.xxx.xx.xxx:3398  ->     64.12.168.33:80     6 1786 1
     ...
