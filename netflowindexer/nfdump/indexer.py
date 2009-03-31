@@ -2,9 +2,9 @@
 import os
 import sys
 
-from netflowindexer.indexer import base
+from netflowindexer.base.indexer import BaseIndexer
 
-class NFDUMPIndexer(base.BaseIndexer):
+class NFDUMPIndexer(BaseIndexer):
     def get_ips(self, fn):
         cmd = "nfdump -r '%s' -q -o pipe|cut -d '|' -f 10,15|tr '|' '\n'" % fn
         ips = set()
@@ -23,7 +23,5 @@ class NFDUMPIndexer(base.BaseIndexer):
         
         return fn[:-2]
 
-def main():
-    i = NFDUMPIndexer()
-    files = sys.argv[1:]
-    i.index_files(files)
+indexer_class = NFDUMPIndexer
+

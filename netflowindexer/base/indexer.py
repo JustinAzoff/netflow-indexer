@@ -8,9 +8,10 @@ import time
 
 
 class BaseIndexer:
-    def __init__(self):
+    def __init__(self, out_dir):
         self.database = None
         self.db_fn = None
+        self.out_dir = out_dir
 
     def has_document(self, key):
         enquire = xapian.Enquire(self.database)
@@ -39,7 +40,7 @@ class BaseIndexer:
         raise NotImplementedError()
 
     def open_db(self, fn):
-        db_fn = self.fn_to_db(fn)
+        db_fn = os.path.join(self.out_dir, self.fn_to_db(fn))
         if db_fn != self.db_fn:
             self.db_fn = db_fn
             self.database = xapian.WritableDatabase(db_fn, xapian.DB_CREATE_OR_OPEN)

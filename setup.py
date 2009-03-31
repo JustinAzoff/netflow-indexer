@@ -22,10 +22,8 @@ setup(name='netflowindexer',
       ],
       entry_points = {
         'console_scripts': [
-            'netflow-index-nfdump     = netflowindexer.indexer.nfdump:main',
-            'netflow-index-flowtools  = netflowindexer.indexer.flowtools:main',
-            'netflow-search-nfdump    = netflowindexer.searcher.nfdump:main',
-            'netflow-search-flowtools = netflowindexer.searcher.flowtools:main',
+            'netflow-index-update     = netflowindexer.main:index',
+            'netflow-index-search     = netflowindexer.main:search',
         ]
       }
   )

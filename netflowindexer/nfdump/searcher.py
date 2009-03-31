@@ -2,9 +2,9 @@
 import sys
 import os
 
-from netflowindexer.searcher.base import search
+from netflowindexer.base.searcher import search
 
-def main():
+def main(*args):
     from optparse import OptionParser
     parser = OptionParser(usage = "usage: %prog db [options] [ips]")
     parser.add_option("-d", "--nfdump", dest="nfdump", action="store_true", default=None,
@@ -12,7 +12,7 @@ def main():
     parser.add_option("-f", "--filter", dest="filter", action="store", default='',
         help="filter to use for nfdump")
 
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args(list(args))
 
     if len(args) < 2:
         parser.print_help()

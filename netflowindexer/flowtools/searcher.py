@@ -3,7 +3,7 @@ import sys
 import os
 import glob
 
-from netflowindexer.searcher.base import search
+from netflowindexer.base.searcher import search
 
 def main():
     from optparse import OptionParser

@@ -3,9 +3,9 @@ import IPy
 import os
 import sys
 
-from netflowindexer.indexer import base
+from netflowindexer.base.indexer import BaseIndexer
 
-class FlowToolsIndexer(base.BaseIndexer):
+class FlowToolsIndexer(BaseIndexer):
     def get_ips(self, fn):
         cmd = "flow-export -f2 < '%s' |cut -d ',' -f 11,12|tr ',' '\n'" % fn
         ips = set()
@@ -29,7 +29,4 @@ class FlowToolsIndexer(base.BaseIndexer):
         
         return fn[:-9]
 
-def main():
-    i = FlowToolsIndexer()
-    files = sys.argv[1:]
-    i.index_files(files)
+indexer_class = FlowToolsIndexer
