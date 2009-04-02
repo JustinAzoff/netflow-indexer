@@ -35,7 +35,7 @@ def do_search(indexer_type, database, ips, dump=None,filter=None):
 
 def search():
     from optparse import OptionParser
-    parser = OptionParser(usage = "usage: %prog -i indexer [searcher_options]")
+    parser = OptionParser(usage = "usage: %prog -i indexer [searcher_options] database.db IP...")
     parser.add_option("-i", "--indexer", dest="indexer", action="store",
         help="indexer to use")
     parser.add_option("-d", "--dump", dest="dump", action="store_true", default=False,
