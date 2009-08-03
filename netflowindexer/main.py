@@ -1,3 +1,6 @@
+import glob
+from netflowindexer import config
+
 def get_indexer(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)
     mod = getattr(mod, indexer_type)
@@ -12,16 +15,17 @@ def do_index(indexer_type, out_dir, files):
 
 def index():
     from optparse import OptionParser
-    parser = OptionParser(usage = "usage: %prog -i indexer [options] /out/dir files")
-    parser.add_option("-i", "--indexer", dest="indexer", action="store",
-            help="indexer to use")
+    parser = OptionParser(usage = "usage: %prog indexer.ini")
 
     (options, args) = parser.parse_args()
-    if len(args) < 2 or not options.indexer:
+    if not args:
         parser.print_help()
         return 1
+    cfgdata = config.read_config(args[0])
 
-    return do_index(options.indexer, args[0], args[1:])
+    files = glob.glob(cfgdata['fileglob'])
+
+    return do_index(cfgdata['indexer'], cfgdata['dbpath'], files)
 
 def get_searcher(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)
