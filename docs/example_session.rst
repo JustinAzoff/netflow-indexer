@@ -4,9 +4,9 @@ Example Session
 Indexing data
 -------------
 
-Tell the netflow indexer to index all the files for 2009-03-29::
+Tell the netflow indexer to index the current netflow files::
 
-    justin@glenn:~$ netflow-index-update  -i nfdump  /data/nfdump_xap/ /data/nfsen/profiles/live/podium/nfcapd.20090329*
+    justin@glenn:~$ netflow-index-update /data/nfdump_xap/nfdump.ini
     * /data/nfsen/profiles/live/podium/nfcapd.2009032900
     * /data/nfsen/profiles/live/podium/nfcapd.2009032901
     * /data/nfsen/profiles/live/podium/nfcapd.2009032902
