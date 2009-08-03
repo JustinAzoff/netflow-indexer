@@ -2,7 +2,8 @@ import ConfigParser
 import datetime
 
 def read_config(fn):
-    now = datetime.datetime.now()
+    now = datetime.datetime.now() - datetime.timedelta(minutes=10)
+
     defaults = {
         'year':     str(now.year),
         'month':    "%02d" % now.month,
