@@ -23,7 +23,7 @@ def index():
         return 1
     cfgdata = config.read_config(args[0])
 
-    files = glob.glob(cfgdata['fileglob'])
+    files = sorted(glob.glob(cfgdata['fileglob']))
 
     return do_index(cfgdata['indexer'], cfgdata['dbpath'], files)
 
