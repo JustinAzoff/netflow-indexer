@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1.2'
+version = '0.1.3'
 long_description = ""
 
 setup(name='netflowindexer',
@@ -24,6 +24,7 @@ setup(name='netflowindexer',
         'console_scripts': [
             'netflow-index-update     = netflowindexer.main:index',
             'netflow-index-search     = netflowindexer.main:search',
+            'netflow-index-search-all = netflowindexer.main:search_all',
         ]
       }
   )

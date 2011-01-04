@@ -62,13 +62,21 @@ Searching for an IP that does not exist in the index is very fast::
     justin@glenn:~$ time netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 1.2.3.4
     real    0m0.067s
 
+You can search the entire index by using netflow-index-search-all::
+
+    justin@glenn:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 1.2.3.4
 
 Dumping data
 ------------
 
-netflow-search-nfdump supports a -d option which automatically runs nfdump for you::
+netflow-index-search and netflow-index-search-all support a -d option which
+automatically runs the appropriate netflow tool for you::
 
     justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d 
     2009-03-29 05:03:54.792     1.260 TCP     xxx.xxx.xx.xxx:3392  ->     64.12.168.33:80    28 3160 1
     2009-03-29 05:03:56.052     0.328 TCP     xxx.xxx.xx.xxx:3398  ->     64.12.168.33:80     6 1786 1
     ...
+
+You can also use the -f option to pass an additional filter::
+
+    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d -f 'port 80'

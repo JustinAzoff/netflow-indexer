@@ -53,3 +53,21 @@ def search():
         return 1
 
     return do_search(options.indexer, args[0], args[1:], options.dump, options.filter)
+
+def search_all():
+    from optparse import OptionParser
+    parser = OptionParser(usage = "usage: %prog indexer.ini [searcher_options] IP...")
+    parser.add_option("-d", "--dump", dest="dump", action="store_true", default=False,
+        help="dump the flows, don't just print the filenames")
+    parser.add_option("-f", "--filter", dest="filter", action="store", default='',
+        help="filter to use when dumping flows with the -d option")
+
+    (options, args) = parser.parse_args()
+    if len(args) < 2:
+        parser.print_help()
+        return 1
+
+    cfgdata = config.read_config(args[0])
+    ips = args[1:]
+    for db in glob.glob(cfgdata['dbpath'] + "/*.db"):
+        do_search(cfgdata['indexer'], db, ips, options.dump, options.filter)
