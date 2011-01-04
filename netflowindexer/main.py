@@ -69,5 +69,5 @@ def search_all():
 
     cfgdata = config.read_config(args[0])
     ips = args[1:]
-    for db in glob.glob(cfgdata['dbpath'] + "/*.db"):
+    for db in sorted(glob.glob(cfgdata['dbpath'] + "/*.db")):
         do_search(cfgdata['indexer'], db, ips, options.dump, options.filter)
