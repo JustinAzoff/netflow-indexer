@@ -1,4 +1,6 @@
 import glob
+import os
+import shutil
 from netflowindexer import config
 
 def get_indexer(indexer_type):
@@ -71,3 +73,33 @@ def search_all():
     ips = args[1:]
     for db in sorted(glob.glob(cfgdata['dbpath'] + "/*.db")):
         do_search(cfgdata['indexer'], db, ips, options.dump, options.filter)
+
+def cleanup():
+    from optparse import OptionParser
+
+    parser = OptionParser(usage = "usage: %prog indexer.ini")
+    parser.add_option("-d", "--delete", dest="delete", action="store_true", default=False,
+        help="Delete old database files, don't just print a report")
+    (options, args) = parser.parse_args()
+    if len(args) != 1:
+        parser.print_help()
+        return 1
+    cfgdata = config.read_config(args[0])
+
+    indexer = get_indexer(cfgdata['indexer'])
+    i = indexer('')
+
+    databases = sorted([x for x in os.listdir(cfgdata['dbpath']) if x.endswith(".db")])
+
+    data_files = glob.glob(cfgdata['allfileglob'])
+    needed_databases = set([i.fn_to_db(f) for f in data_files])
+
+    to_delete = [x for x in databases if x not in needed_databases]
+
+    for x in to_delete:
+        full_path = os.path.join(cfgdata['dbpath'], x)
+        if options.delete:
+            print "Deleting", full_path
+            shutil.rmtree(full_path)
+        else:
+            print "Need to delete:", full_path
