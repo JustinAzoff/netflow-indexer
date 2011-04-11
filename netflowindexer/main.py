@@ -9,10 +9,10 @@ def get_indexer(indexer_type):
     indexer = mod.indexer.indexer_class
     return indexer
 
-def do_index(indexer_type, out_dir, files):
+def do_index(indexer_type, cfg_data, files):
     indexer = get_indexer(indexer_type)
 
-    i = indexer(out_dir)
+    i = indexer(cfg_data)
     return i.index_files(files)
 
 def index():
@@ -27,7 +27,7 @@ def index():
 
     files = sorted(glob.glob(cfgdata['fileglob']))
 
-    return do_index(cfgdata['indexer'], cfgdata['dbpath'], files)
+    return do_index(cfgdata['indexer'], cfgdata, files)
 
 def get_searcher(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)

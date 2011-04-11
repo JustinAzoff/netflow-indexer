@@ -8,10 +8,11 @@ import time
 
 
 class BaseIndexer:
-    def __init__(self, out_dir):
+    def __init__(self, cfg_data):
         self.database = None
         self.db_fn = None
-        self.out_dir = out_dir
+        self.out_dir = cfg_data['dbpath']
+        self.flowpath = cfg_data['flowpath']
 
     def has_document(self, key):
         enquire = xapian.Enquire(self.database)
