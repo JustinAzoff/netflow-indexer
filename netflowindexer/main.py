@@ -87,7 +87,7 @@ def cleanup():
     cfgdata = config.read_config(args[0])
 
     indexer = get_indexer(cfgdata['indexer'])
-    i = indexer('')
+    i = indexer(cfgdata)
 
     databases = sorted([x for x in os.listdir(cfgdata['dbpath']) if x.endswith(".db")])
 
