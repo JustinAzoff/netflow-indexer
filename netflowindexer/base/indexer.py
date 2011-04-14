@@ -26,7 +26,7 @@ class BaseIndexer:
         return False
 
     def dump_ip(self, ip):
-        return struct.pack("<L", ip.int())
+        return struct.pack(">L", ip.int())
 
     def get_ips(self, fn):
         raise NotImplementedError()
@@ -65,7 +65,7 @@ class BaseIndexer:
             #    ips.add(self.dump_ip(r['srcip']))
             #    ips.add(self.dump_ip(r['dstip']))
             for ip in self.get_ips(fn):
-                ips.add(struct.pack("<L", ip))
+                ips.add(struct.pack(">L", ip))
             print "read %s in %0.1f seconds" % (fn, time.time() - st)
 
         st = time.time()

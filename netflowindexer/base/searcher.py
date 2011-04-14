@@ -6,20 +6,26 @@ import IPy
 
 import struct
 
-def do_search(database, words):
-    enquire = xapian.Enquire(database)
-    q = []
-    query = xapian.Query(xapian.Query.OP_OR, words)
+class BaseSearcher:
+    def __init__(self, db):
+        self.database = xapian.Database(db)
 
-    enquire.set_query(query)
-    matches = enquire.get_mset(0, 2000)
+    def do_search(self, words):
+        enquire = xapian.Enquire(self.database)
+        query = xapian.Query(xapian.Query.OP_OR, words)
 
-    for match in matches:
-        doc = match[xapian.MSET_DOCUMENT].get_data()
-        yield doc
+        enquire.set_query(query)
+        matches = enquire.get_mset(0, 2000)
 
-def search(db, words):
-    database = xapian.Database(db)
-    ips = [struct.pack("<L", IPy.IP(word).int()) for word in words]
-    for doc in do_search(database, ips):
-        yield doc
+        for match in matches:
+            doc = match.document.get_data()
+            yield doc
+
+    def search_ips(self, ips):
+        words = [struct.pack(">L", IPy.IP(ip).int()) for ip in ips]
+        return self.do_search(words)
+
+    def docid_to_date(self, fn):
+        """turn /data/nfsen/profiles/live/podium/nfcapd.2009030110 into
+        a date of 2009-03-01 10:00"""
+        raise NotImplementedError()
