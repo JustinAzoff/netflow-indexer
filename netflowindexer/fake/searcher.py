@@ -7,7 +7,7 @@ from netflowindexer.base.searcher import BaseSearcher
 class FakeSearcher(BaseSearcher):
     def docid_to_date(self, fn):
         """turn ips.2011-04-15-12.txt into a date"""
-        t = fn[-17:-4]
+        t = fn[-13:]
         return datetime.datetime.strptime(t,'%Y-%m-%d-%H')
 
     def search(self, ips, dump=False, filter=None):
