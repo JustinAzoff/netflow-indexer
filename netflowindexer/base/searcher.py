@@ -25,7 +25,10 @@ class BaseSearcher:
         words = []
         for ip in ips:
             if '/' in ip:
-                words.extend(self.expand_netmask(ip))
+                net = self.expand_netmask(ip)
+                #FIXME: raise exception?
+                if len(net) < 300:
+                    words.extend(net)
             else :
                 words.append(self.convert_ip(ip))
         return self.do_search(words)
