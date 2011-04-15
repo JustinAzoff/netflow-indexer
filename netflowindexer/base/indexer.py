@@ -53,6 +53,7 @@ class BaseIndexer:
             self.real_index_files(list(files))
 
     def real_index_files(self, fns):
+        begin = time.time()
         last_fn = fns[-1]
         database = self.open_db(last_fn)
         #if the last file is already indexed, nothing to do
@@ -66,7 +67,7 @@ class BaseIndexer:
             #    ips.add(self.dump_ip(r['dstip']))
             for ip in self.get_ips(fn):
                 ips.add(struct.pack(">L", ip))
-            print "read %s in %0.1f seconds" % (fn, time.time() - st)
+            print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
 
         st = time.time()
         doc = xapian.Document()
@@ -86,4 +87,4 @@ class BaseIndexer:
         database.replace_document(key, doc)
         database.flush()
 
-        print 'loading data into xapian took %0.1f seconds' % (time.time() - st)
+        print 'loading data into xapian took %0.1f seconds. %0.1f total' % (time.time() - st, time.time() - begin)
