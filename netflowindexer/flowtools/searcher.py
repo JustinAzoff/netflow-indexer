@@ -1,19 +1,26 @@
-#!/usr/bin/env python
+import datetime
 import sys
 import os
-import glob
+from netflowindexer.base.searcher import BaseSearcher
 
-from netflowindexer.base.searcher import search
+class FlowToolsSearcher(BaseSearcher):
+    def docid_to_date(self, fn):
+        """turn /usr/local/var/db/flows/packeteer/2009/2009-03/2009-03-27/ft-v05.2009-03-27.16 into
+        a date of 2009-03-27 16:00"""
+        t = fn[-13:]
+        return datetime.datetime.strptime(t,'%Y-%m-%d.%H')
 
-def main(database, ips, dump=False, filter=None):
-    ip_filter = ' or '.join('host = %s' % ip for ip in ips)
-    if filter:
-        ip_filter = "(%s) and (%s)" % (ip_filter, filter)
+    def search(self, ips, dump=False, filter=None):
+        ip_filter = ' or '.join('host = %s' % ip for ip in ips)
+        if filter:
+            ip_filter = "(%s) and (%s)" % (ip_filter, filter)
 
-    docs = sorted(list(search(database,ips)))
-    if not dump:
-        for doc in docs:
-            print doc
-    else:
-        for doc in docs:
-            os.system("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter))
+        docs = sorted(list(self.search_ips(ips)))
+        if not dump:
+            for doc in docs:
+                print self.docid_to_date(doc)
+        else:
+            for doc in docs:
+                os.system("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter))
+
+searcher_class = FlowToolsSearcher
