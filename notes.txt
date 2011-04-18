@@ -1,0 +1,21 @@
+if '/' in ip:
+    convert to ip, check netmask
+    if netmask in 8,16,24,32:
+        strip to netmask/8 bytes: (/16 means strip to 2 bytes)
+
+    otherwise map to best prefix:
+        28ish - 31 -> just enumerate all ips
+
+        25-27 -> 24 + filter
+        23 -> 2*24
+        22 -> 4*24
+
+        17 -> /16 + filter
+        15 -> 2*16
+
+    use allterms on each prefix
+    if filter:
+        filter.  terms are sequential, so can stop at the first non-match
+
+    generate search query for xapian using OR
+    generate search query for nfdump using 'net %s'

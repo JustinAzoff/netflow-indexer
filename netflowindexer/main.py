@@ -32,12 +32,13 @@ def index():
 def get_searcher(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)
     mod = getattr(mod, indexer_type)
-    searcher = mod.searcher.main
+    searcher = mod.searcher.searcher_class
     return searcher
 
 def do_search(indexer_type, database, ips, dump=None,filter=None):
     searcher = get_searcher(indexer_type)
-    return searcher(database, ips, dump, filter)
+    s = searcher(database)
+    return s.search(ips, dump, filter)
 
 def search():
     from optparse import OptionParser
