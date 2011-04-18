@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Example Session &mdash; netflow-indexer v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="netflow-indexer v0.1 documentation" href="index.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="example-session">
+<h1>Example Session<a class="headerlink" href="#example-session" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="indexing-data">
+<h2>Indexing data<a class="headerlink" href="#indexing-data" title="Permalink to this headline">¶</a></h2>
+<p>Tell the netflow indexer to index the current netflow files:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ netflow-index-update /data/nfdump_xap/nfdump.ini
+* /data/nfsen/profiles/live/podium/nfcapd.2009032900
+* /data/nfsen/profiles/live/podium/nfcapd.2009032901
+* /data/nfsen/profiles/live/podium/nfcapd.2009032902
+* /data/nfsen/profiles/live/podium/nfcapd.2009032903
+* /data/nfsen/profiles/live/podium/nfcapd.2009032904
+* /data/nfsen/profiles/live/podium/nfcapd.2009032905
+* /data/nfsen/profiles/live/podium/nfcapd.2009032906
+* /data/nfsen/profiles/live/podium/nfcapd.2009032907
+* /data/nfsen/profiles/live/podium/nfcapd.2009032908
+* /data/nfsen/profiles/live/podium/nfcapd.2009032909
+* /data/nfsen/profiles/live/podium/nfcapd.2009032910
+* /data/nfsen/profiles/live/podium/nfcapd.2009032911
+* /data/nfsen/profiles/live/podium/nfcapd.2009032912
+* /data/nfsen/profiles/live/podium/nfcapd.2009032913
+* /data/nfsen/profiles/live/podium/nfcapd.2009032914
+read /data/nfsen/profiles/live/podium/nfcapd.200903291400 in 1.3 seconds
+read /data/nfsen/profiles/live/podium/nfcapd.200903291405 in 1.3 seconds
+read /data/nfsen/profiles/live/podium/nfcapd.200903291410 in 1.4 seconds
+read /data/nfsen/profiles/live/podium/nfcapd.200903291415 in 1.4 seconds
+read /data/nfsen/profiles/live/podium/nfcapd.200903291420 in 1.4 seconds
+read /data/nfsen/profiles/live/podium/nfcapd.200903291425 in 1.3 seconds
+loading data into xapian took 8.8 seconds</pre>
+</div>
+<p>Hours 00 through 13 are skipped because they are already fully indexed.</p>
+</div>
+<div class="section" id="searching-the-index">
+<h2>Searching the index<a class="headerlink" href="#searching-the-index" title="Permalink to this headline">¶</a></h2>
+<p>Search the index for 2009-03-29:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ host www.aol.com
+...
+www-east.aol.com.aol.akadns.net A       64.12.168.33
+
+justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33
+/data/nfsen/profiles/live/podium/nfcapd.2009032905
+/data/nfsen/profiles/live/podium/nfcapd.2009032909
+/data/nfsen/profiles/live/podium/nfcapd.2009032911
+/data/nfsen/profiles/live/podium/nfcapd.2009032912
+/data/nfsen/profiles/live/podium/nfcapd.2009032913
+/data/nfsen/profiles/live/podium/nfcapd.2009032914
+
+real    0m0.075s
+user    0m0.052s
+sys     0m0.020s</pre>
+</div>
+<p>This IP was present in the index for 6 of the 15 hours, so dumping all the netflow records
+will be over twice as fast.</p>
+<p>Searching for an IP that does not exist in the index is very fast:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ time netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 1.2.3.4
+real    0m0.067s</pre>
+</div>
+<p>You can search the entire index by using netflow-index-search-all:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 1.2.3.4</pre>
+</div>
+</div>
+<div class="section" id="dumping-data">
+<h2>Dumping data<a class="headerlink" href="#dumping-data" title="Permalink to this headline">¶</a></h2>
+<p>netflow-index-search and netflow-index-search-all support a -d option which
+automatically runs the appropriate netflow tool for you:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d
+2009-03-29 05:03:54.792     1.260 TCP     xxx.xxx.xx.xxx:3392  -&gt;     64.12.168.33:80    28 3160 1
+2009-03-29 05:03:56.052     0.328 TCP     xxx.xxx.xx.xxx:3398  -&gt;     64.12.168.33:80     6 1786 1
+...</pre>
+</div>
+<p>You can also use the -f option to pass an additional filter:</p>
+<div class="highlight-python"><pre>justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d -f 'port 80'</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Example Session</a><ul>
+<li><a class="reference external" href="#indexing-data">Indexing data</a></li>
+<li><a class="reference external" href="#searching-the-index">Searching the index</a></li>
+<li><a class="reference external" href="#dumping-data">Dumping data</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="configuration.html"
+                                  title="previous chapter">Configuration</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/example_session.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             >previous</a> |</li>
+        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Justin Azoff.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>
