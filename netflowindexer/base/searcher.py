@@ -5,6 +5,7 @@ import xapian
 import IPy
 
 import struct
+from socket import inet_pton, inet_aton, AF_INET6
 
 class BaseSearcher:
     def __init__(self, db):
@@ -34,7 +35,10 @@ class BaseSearcher:
         return self.do_search(words)
 
     def convert_ip(self, ip):
-        return struct.pack(">L", IPy.IP(ip).int())
+        if ':' in ip:
+            return inet_pton(AF_INET6, ip)
+        else:
+            return inet_aton(ip)
 
     def ips_from_network(self, network):
         #FIXME: a /24 should do two /23 searches, not 1/16
