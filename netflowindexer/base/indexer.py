@@ -6,6 +6,7 @@ import struct
 import itertools
 import time
 
+from socket import inet_pton, inet_aton, AF_INET6
 
 class BaseIndexer:
     def __init__(self, cfg_data):
@@ -78,7 +79,10 @@ class BaseIndexer:
             #    ips.add(self.dump_ip(r['srcip']))
             #    ips.add(self.dump_ip(r['dstip']))
             for ip in self.get_ips(fn):
-                add_ip(struct.pack(">L", ip))
+                if ':' in ip:
+                    add_ip(inet_pton(AF_INET6, ip))
+                else:
+                    add_ip(inet_aton(ip))
             print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
 
         st = time.time()

@@ -6,10 +6,11 @@ from netflowindexer.base.indexer import BaseIndexer
 
 class NFDUMPIndexer(BaseIndexer):
     def get_ips(self, fn):
-        cmd = "nfdump -r '%s' -q -o pipe|cut -d '|' -f 10,15|tr '|' '\n'" % fn
+        cmd = "nfdump -r '%s' -q -o csv|cut -d ',' -f 4,5|tr ',' '\n'" % fn
         ips = set()
         for line in os.popen(cmd):
-            ip = int(line)
+            ip = line.rstrip()
+            if ip == 'Summary': break
             ips.add(ip)
         return ips
     def fn_to_db(self, fn):
