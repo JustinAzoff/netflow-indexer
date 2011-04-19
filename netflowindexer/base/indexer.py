@@ -60,21 +60,20 @@ class BaseIndexer:
         if self.has_document("fn:%s" % last_fn):
             return
         ips = set()
+        add_ip = ips.add
         for fn in fns:
             st = time.time()
             #for r in pynfdump.search_file(fn):
             #    ips.add(self.dump_ip(r['srcip']))
             #    ips.add(self.dump_ip(r['dstip']))
             for ip in self.get_ips(fn):
-                ips.add(struct.pack(">L", ip))
+                add_ip(struct.pack(">L", ip))
             print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
 
         st = time.time()
         doc = xapian.Document()
 
-
-        for ip in ips:
-            doc.add_term(ip)
+        map(doc.add_term, ips)
 
         for fn in fns:
             doc.add_term("fn:%s" % fn)
