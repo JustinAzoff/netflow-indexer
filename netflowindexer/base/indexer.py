@@ -37,11 +37,8 @@ class BaseIndexer:
         raise NotImplementedError()
 
     def get_bytes(self, fn):
-        st = time.time()
         ips = self.get_ips(fn)
-        bytes =  map(self.dump_ip, ips)
-        print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
-        return bytes
+        return map(self.dump_ip, ips)
 
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
@@ -82,11 +79,15 @@ class BaseIndexer:
         if self.has_document("fn:%s" % last_fn):
             return
         if len(fns) == 1:
+            st = time.time()
             ips = self.get_bytes(fns[0])
+            print "read %s in %0.1f seconds. %d ips." % (fns[0], time.time() - st, len(ips))
         else:
             ips = set()
             for fn in fns:
+                st = time.time()
                 ips.update(self.get_bytes(fn))
+                print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
 
         doc = xapian.Document()
 

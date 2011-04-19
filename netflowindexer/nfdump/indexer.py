@@ -4,14 +4,22 @@ import sys
 
 from netflowindexer.base.indexer import BaseIndexer
 
+from struct import pack
+
 class NFDUMPIndexer(BaseIndexer):
-    def get_ips(self, fn):
-        cmd = "nfdump -r '%s' -q -o csv|cut -d ',' -f 4,5|tr ',' '\n'" % fn
+    def get_bytes(self, fn):
+        cmd = "nfdump -r '%s' -q -o pipe" % fn
         ips = set()
+        update = ips.update
         for line in os.popen(cmd):
-            ip = line.rstrip()
-            if ip == 'Summary': break
-            ips.add(ip)
+            parts = line.split("|")
+            if parts[6:9] != ['0','0','0']: #ipv6
+                sa = pack(">LLLL", *[int(x) for x in parts[6:10]])
+                da = pack(">LLLL", *[int(x) for x in parts[11:15]])
+            else:
+                sa = pack(">L", int(parts[9]))
+                da = pack(">L", int(parts[14]))
+            update([sa,da])
         return ips
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
