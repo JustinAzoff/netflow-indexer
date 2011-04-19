@@ -14,8 +14,8 @@ class NFDUMPIndexer(BaseIndexer):
         for line in os.popen(cmd):
             parts = line.split("|")
             if parts[6:9] != ['0','0','0']: #ipv6
-                sa = pack(">LLLL", *[int(x) for x in parts[6:10]])
-                da = pack(">LLLL", *[int(x) for x in parts[11:15]])
+                sa = pack(">LLLL", int(parts[6]),  int(parts[7]),  int(parts[8]),  int(parts[9]))
+                da = pack(">LLLL", int(parts[11]), int(parts[12]), int(parts[13]), int(parts[14]))
             else:
                 sa = pack(">L", int(parts[9]))
                 da = pack(">L", int(parts[14]))
