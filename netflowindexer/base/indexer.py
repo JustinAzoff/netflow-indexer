@@ -28,10 +28,20 @@ class BaseIndexer:
         return False
 
     def dump_ip(self, ip):
-        return struct.pack(">L", ip.int())
+        if ':' in ip:
+            return net_pton(AF_INET6, ip)
+        else:
+            return inet_aton(ip)
 
     def get_ips(self, fn):
         raise NotImplementedError()
+
+    def get_bytes(self, fn):
+        st = time.time()
+        ips = self.get_ips(fn)
+        bytes =  map(self.dump_ip, ips)
+        print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
+        return bytes
 
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
@@ -71,21 +81,13 @@ class BaseIndexer:
         #if the last file is already indexed, nothing to do
         if self.has_document("fn:%s" % last_fn):
             return
-        ips = set()
-        add_ip = ips.add
-        for fn in fns:
-            st = time.time()
-            #for r in pynfdump.search_file(fn):
-            #    ips.add(self.dump_ip(r['srcip']))
-            #    ips.add(self.dump_ip(r['dstip']))
-            for ip in self.get_ips(fn):
-                if ':' in ip:
-                    add_ip(inet_pton(AF_INET6, ip))
-                else:
-                    add_ip(inet_aton(ip))
-            print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
+        if len(fns) == 1:
+            ips = self.get_bytes(fns[0])
+        else:
+            ips = set()
+            for fn in fns:
+                ips.update(self.get_bytes(fn))
 
-        st = time.time()
         doc = xapian.Document()
 
         map(doc.add_term, ips)
