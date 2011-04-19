@@ -5,6 +5,7 @@ import xapian
 import IPy
 
 import struct
+from socket import inet_pton, inet_aton, inet_ntoa, inet_ntop, AF_INET6
 
 class BaseSearcher:
     def __init__(self, db):
@@ -34,11 +35,20 @@ class BaseSearcher:
         return self.do_search(words)
 
     def convert_ip(self, ip):
-        return struct.pack(">L", IPy.IP(ip).int())
+        if ':' in ip:
+            return inet_pton(AF_INET6, ip)
+        else:
+            return inet_aton(ip)
+
+    def restore_ip(self, s):
+        if len(s) == 4:
+            return inet_ntoa(s)
+        else:
+            return inet_ntop(AF_INET6, s)
 
     def ips_from_network(self, network):
         #FIXME: a /24 should do two /23 searches, not 1/16
-        net = struct.pack(">L", network.net().int())
+        net = self.convert_ip(str(network.net()))
         strip = network.prefixlen()/8
         prefix = net[:strip]
 
@@ -49,12 +59,12 @@ class BaseSearcher:
         """Expand netmask based on the terms in the database.
            Doesn't bother using the database for tiny networks"""
         network = IPy.IP(netmask)
-        if len(network) < 32:
-            return [struct.pack(">L", ip.int()) for ip in network]
+        if network.len() < 32:
+            return [self.convert_ip(ip) for ip in network]
         ips = self.ips_from_network(network)
 
-        if network.prefixlen() not in (8,16,24):
-            ips = [ip for ip in ips if IPy.IP(struct.unpack(">L", ip)[0]) in network]
+        if network.prefixlen() % 8 !=0:
+            ips = [ip for ip in ips if IPy.IP(self.restore_ip(ip)) in network]
         return ips
 
     def docid_to_date(self, fn):

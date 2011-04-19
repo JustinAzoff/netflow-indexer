@@ -5,6 +5,11 @@ def test_basic_search():
     assert(len(list(s.search_ips(["1.2.3.4"]))))==1
     assert(len(list(s.search_ips(["9.9.9.9"]))))==0
 
+def test_ipv6_search():
+    s = searcher.BaseSearcher('tests/2011-04-15.db')
+    assert(len(list(s.search_ips(["2001:4860:800f::68"]))))==1
+    assert(len(list(s.search_ips(["2001:4860:800f::62"]))))==0
+
 def test_netmask_expand():
     s = searcher.BaseSearcher('tests/2011-04-15.db')
 
@@ -18,3 +23,10 @@ def test_netmask_expand_23():
     expanded = s.expand_netmask("3.3.2.0/23")
     print expanded
     assert expanded == [s.convert_ip("3.3.3.99")]
+
+def test_netmask_expand_ipv6():
+    s = searcher.BaseSearcher('tests/2011-04-15.db')
+
+    expanded = s.expand_netmask("2001:4860::/32")
+    print expanded
+    assert expanded == [s.convert_ip("2001:4860:800f::68")]

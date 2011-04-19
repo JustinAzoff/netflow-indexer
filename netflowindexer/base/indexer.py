@@ -6,6 +6,7 @@ import struct
 import itertools
 import time
 
+from socket import inet_pton, inet_aton, AF_INET6
 
 class BaseIndexer:
     def __init__(self, cfg_data):
@@ -27,10 +28,17 @@ class BaseIndexer:
         return False
 
     def dump_ip(self, ip):
-        return struct.pack(">L", ip.int())
+        if ':' in ip:
+            return net_pton(AF_INET6, ip)
+        else:
+            return inet_aton(ip)
 
     def get_ips(self, fn):
         raise NotImplementedError()
+
+    def get_bytes(self, fn):
+        ips = self.get_ips(fn)
+        return map(self.dump_ip, ips)
 
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
@@ -71,18 +79,17 @@ class BaseIndexer:
         #if the last file is already indexed, nothing to do
         if self.has_document("fn:%s" % last_fn):
             return
-        ips = set()
-        add_ip = ips.add
-        for fn in fns:
+        if len(fns) == 1:
             st = time.time()
-            #for r in pynfdump.search_file(fn):
-            #    ips.add(self.dump_ip(r['srcip']))
-            #    ips.add(self.dump_ip(r['dstip']))
-            for ip in self.get_ips(fn):
-                add_ip(struct.pack(">L", ip))
-            print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
+            ips = self.get_bytes(fns[0])
+            print "read %s in %0.1f seconds. %d ips." % (fns[0], time.time() - st, len(ips))
+        else:
+            ips = set()
+            for fn in fns:
+                st = time.time()
+                ips.update(self.get_bytes(fn))
+                print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
 
-        st = time.time()
         doc = xapian.Document()
 
         map(doc.add_term, ips)

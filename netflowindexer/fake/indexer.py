@@ -9,7 +9,7 @@ class FakeIndexer(BaseIndexer):
     def get_ips(self, fn):
         ips = set()
         for line in open(fn):
-            ip = IPy.IP(line.strip()).int()
+            ip = line.strip()
             ips.add(ip)
         return ips
     def fn_to_db(self, fn):

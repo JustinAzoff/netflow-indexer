@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import IPy
 import os
 import sys
 
@@ -13,7 +12,7 @@ class FlowToolsIndexer(BaseIndexer):
         f.readline()# skip header
         f.readline()# skip header
         for line in f:
-            ip = IPy.IP(line).int()
+            ip = line.rstrip()
             ips.add(ip)
         return ips
 
