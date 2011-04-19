@@ -62,6 +62,7 @@ class BaseIndexer:
         for docid, files in itertools.groupby(fns, self.fn_to_docid):
             #print '*', docid
             self.real_index_files(list(files))
+        self.maybe_flush(True)
 
     def real_index_files(self, fns):
         begin = time.time()
