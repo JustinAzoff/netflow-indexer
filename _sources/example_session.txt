@@ -36,47 +36,46 @@ Hours 00 through 13 are skipped because they are already fully indexed.
 Searching the index
 -------------------
 
-Search the index for 2009-03-29::
+Search the index for 2011-04-18::
 
-    justin@glenn:~$ host www.aol.com
-    ...
-    www-east.aol.com.aol.akadns.net A       64.12.168.33
+    # 59.124.163.60 is an address that just scanned us
+    remote@nf:~$ time netflow-index-search -i nfdump_full /data/nfdump_xap/20110419.db 59.124.163.60
+    2011-04-19 05:35:00
+    2011-04-19 05:40:00
+    2011-04-19 05:45:00
+    2011-04-19 05:50:00
+    2011-04-19 05:55:00
+    2011-04-19 06:00:00
+    2011-04-19 06:05:00
+    2011-04-19 07:40:00
+    2011-04-19 07:45:00
+    2011-04-19 07:50:00
+    2011-04-19 07:55:00
 
-    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33
-    /data/nfsen/profiles/live/podium/nfcapd.2009032905
-    /data/nfsen/profiles/live/podium/nfcapd.2009032909
-    /data/nfsen/profiles/live/podium/nfcapd.2009032911
-    /data/nfsen/profiles/live/podium/nfcapd.2009032912
-    /data/nfsen/profiles/live/podium/nfcapd.2009032913
-    /data/nfsen/profiles/live/podium/nfcapd.2009032914
+    real    0m0.072s
 
-    real    0m0.075s
-    user    0m0.052s
-    sys     0m0.020s
-
-This IP was present in the index for 6 of the 15 hours, so dumping all the netflow records
-will be over twice as fast.
+This output shows that it was present in the index in 11 5 minute chunks.
+Searching the 30 day index takes only slightly longer and returns the same results
 
 Searching for an IP that does not exist in the index is very fast::
 
-    justin@glenn:~$ time netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 1.2.3.4
-    real    0m0.067s
+    remote@nf:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 9.254.9.254
 
-You can search the entire index by using netflow-index-search-all::
-
-    justin@glenn:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 1.2.3.4
+    real    0m0.268s
 
 Dumping data
 ------------
 
-netflow-index-search and netflow-index-search-all support a -d option which
+`netflow-index-search` and `netflow-index-search-all` support a -d option which
 automatically runs the appropriate netflow tool for you::
 
-    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d 
-    2009-03-29 05:03:54.792     1.260 TCP     xxx.xxx.xx.xxx:3392  ->     64.12.168.33:80    28 3160 1
-    2009-03-29 05:03:56.052     0.328 TCP     xxx.xxx.xx.xxx:3398  ->     64.12.168.33:80     6 1786 1
+    remote@nf:~$ time netflow-index-search-all /data/nfdump_xap/nfdump.ini 59.124.163.60 -d|head
+    2011-04-19 05:38:36.468     1.696 TCP      59.124.163.60:39432 ->    123.123.2.245:22           4      192     1
+    2011-04-19 05:38:36.468     1.776 TCP      59.124.163.60:50920 ->    123.123.2.246:22           4      192     1
+    2011-04-19 05:38:36.468     1.428 TCP      123.123.2.245:22    ->    59.124.163.60:39432        4      237     1
+    2011-04-19 05:38:36.472     0.828 TCP      59.124.163.60:36167 ->    123.123.2.247:22           3      152     1
     ...
 
 You can also use the -f option to pass an additional filter::
 
-    justin@glenn:~$ netflow-index-search -i nfdump /data/nfdump_xap/20090329.db 64.12.168.33 -d -f 'port 80'
+    remote@nf:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 59.124.163.60 -d -f 'not port 22'

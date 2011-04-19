@@ -51,10 +51,11 @@
 indexer to use and the location of the files on disk.  It has the following
 settings:</p>
 <ul class="simple">
-<li>indexer - the type of indexer to use. <cite>nfdump</cite> or <cite>flowtools</cite></li>
+<li>indexer - the type of indexer to use. <cite>nfdump</cite>, <cite>nfdump_full</cite> or <cite>flowtools</cite></li>
 <li>dbpath  - the path to save the indexes to</li>
 <li>fileglob - the shell glob that will expand to the flow data files for the
 current hour</li>
+<li>allfileglob - the shell glob that will expand to all flow data files</li>
 </ul>
 <div class="section" id="example-configuration-files">
 <h2>Example Configuration files<a class="headerlink" href="#example-configuration-files" title="Permalink to this headline">¶</a></h2>
@@ -62,6 +63,17 @@ current hour</li>
 <h3>nfdump<a class="headerlink" href="#nfdump" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><pre>[nfi]
 indexer = nfdump
+dbpath = /data/nfdump_xap
+flowpath = /data/nfsen/profiles/live/podium
+fileglob = %(flowpath)s/nfcapd.%(year)s%(month)s%(day)s*
+allfileglob = %(flowpath)s/nfcapd.*
+</pre>
+</div>
+</div>
+<div class="section" id="nfdump-using-full-indexing">
+<h3>nfdump using full indexing<a class="headerlink" href="#nfdump-using-full-indexing" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>[nfi]
+indexer = nfdump_full
 dbpath = /data/nfdump_xap
 flowpath = /data/nfsen/profiles/live/podium
 fileglob = %(flowpath)s/nfcapd.%(year)s%(month)s%(day)s*
@@ -83,8 +95,42 @@ allfileglob = %(flowpath)s/*/*/*/ft-v05.*
 </div>
 <div class="section" id="cron">
 <h2>Cron<a class="headerlink" href="#cron" title="Permalink to this headline">¶</a></h2>
-<p>Netflow-indexer should be run from cron 5 minutes after every hour:</p>
-<div class="highlight-python"><pre>5 * * * * netflow-index-update /data/nfdump_xap/nfdump.ini &gt; /dev/null</pre>
+<p>Netflow-indexer should be run from cron 5 minutes after every hour when using
+the <cite>nfdump</cite> indexer and every 5 minutes when using the <cite>nfdump_full</cite> indexer:</p>
+<div class="highlight-python"><pre>MAILTO=root
+PATH=/usr/local/python_env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+45 0 * * *   cd /data/nfdump_xap/ &amp;&amp; ./daily_compact &gt; /dev/null
+*/5  * * * * sleep 30;netflow-index-update  /data/nfdump_xap/nfdump.ini
+55 0 * * *   netflow-index-cleanup /data/nfdump_xap/nfdump.ini -d</pre>
+</div>
+</div>
+<div class="section" id="daily-compaction">
+<h2>Daily compaction<a class="headerlink" href="#daily-compaction" title="Permalink to this headline">¶</a></h2>
+<p>xapian allows you to compact an index for read-only use.  Compaction yields disk usage and speed improvements.
+daily compaction is a work in progress</p>
+<div class="section" id="examples-daily-compact-sh">
+<h3>examples/daily_compact.sh<a class="headerlink" href="#examples-daily-compact-sh" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>#!/bin/sh
+DAY=`date +"%Y%m%d" -d "60 minutes ago"`
+
+./xap_compact ${DAY}.db
+</pre>
+</div>
+</div>
+<div class="section" id="examples-xap-compact-sh">
+<h3>examples/xap_compact.sh<a class="headerlink" href="#examples-xap-compact-sh" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>#!/bin/sh
+orig="$1"
+tmp=tmp_$$.db
+tmp2=tmp2_$$.db
+
+if [ -e $orig/.compacted ] ; then
+    exit 0
+fi
+
+xapian-compact -F $orig $tmp &amp;&amp; mv $orig $tmp2 &amp;&amp; mv $tmp $orig &amp;&amp; rm -rf $tmp2 &amp;&amp; touch $orig/.compacted
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -100,10 +146,16 @@ allfileglob = %(flowpath)s/*/*/*/ft-v05.*
 <li><a class="reference external" href="#">Configuration</a><ul>
 <li><a class="reference external" href="#example-configuration-files">Example Configuration files</a><ul>
 <li><a class="reference external" href="#nfdump">nfdump</a></li>
+<li><a class="reference external" href="#nfdump-using-full-indexing">nfdump using full indexing</a></li>
 <li><a class="reference external" href="#flow-tools">flow-tools</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#cron">Cron</a></li>
+<li><a class="reference external" href="#daily-compaction">Daily compaction</a><ul>
+<li><a class="reference external" href="#examples-daily-compact-sh">examples/daily_compact.sh</a></li>
+<li><a class="reference external" href="#examples-xap-compact-sh">examples/xap_compact.sh</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -152,7 +204,7 @@ allfileglob = %(flowpath)s/*/*/*/ft-v05.*
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2009, Justin Azoff.
+      &copy; Copyright 2011, Justin Azoff.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
     </div>
   </body>
