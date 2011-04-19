@@ -1,0 +1,7 @@
+Netflow-indexer is a program that uses xapian to index the flat file databases used by nfdump or flow-tools.
+
+It lets you search a month of netflow data in seconds.  It doesn't index the
+actual data, just what IP addresses are seen in which data file.  It is used in
+a similar fashion as a bloom filter.
+
+See the full documentation here: http://justinazoff.github.com/netflow-indexer/
