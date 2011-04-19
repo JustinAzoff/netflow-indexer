@@ -11,6 +11,11 @@ class NFDUMPSearcher(BaseSearcher):
         t = fn[-10:]
         return datetime.datetime.strptime(t,'%Y%m%d%H')
 
+    def show(self, doc, filter):
+        start = doc + '00'
+        end = os.path.basename(doc) + '55'
+        os.system("nfdump -q -R %s:%s '%s'"  % (start,end, filter))
+
     def search(self, ips, dump=False, filter=None):
         ip_filter = 'ip in [%s]' % ' '.join(ips)
         if filter:
@@ -22,8 +27,6 @@ class NFDUMPSearcher(BaseSearcher):
                 print self.docid_to_date(doc)
         else:
             for doc in docs:
-                start = doc + '00'
-                end = os.path.basename(doc) + '55'
-                os.system("nfdump -q -R %s:%s '%s'"  % (start,end, ip_filter))
+                self.show(doc, ip_filter)
 
 searcher_class = NFDUMPSearcher

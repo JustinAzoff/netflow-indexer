@@ -11,6 +11,7 @@ class BaseIndexer:
     def __init__(self, cfg_data):
         self.database = None
         self.db_fn = None
+        self.doc_count = 0
         self.out_dir = cfg_data['dbpath']
         self.flowpath = cfg_data['flowpath']
 
@@ -44,12 +45,22 @@ class BaseIndexer:
         db_fn = os.path.join(self.out_dir, self.fn_to_db(fn))
         if db_fn != self.db_fn:
             self.db_fn = db_fn
+            if self.database:
+                self.maybe_flush(True)
             self.database = xapian.WritableDatabase(db_fn, xapian.DB_CREATE_OR_OPEN)
         return self.database
 
+    def maybe_flush(self, force=False):
+        self.doc_count += 1
+        if self.doc_count == 12*3 or force:
+            st = time.time()
+            self.database.flush()
+            print "Flush took %0.1f seconds." % (time.time() - st)
+            self.doc_count = 0
+
     def index_files(self, fns):
         for docid, files in itertools.groupby(fns, self.fn_to_docid):
-            print '*', docid
+            #print '*', docid
             self.real_index_files(list(files))
 
     def real_index_files(self, fns):
@@ -85,6 +96,6 @@ class BaseIndexer:
         key = "fn:%s" % docid
         doc.add_term(key)
         database.replace_document(key, doc)
-        database.flush()
+        self.maybe_flush()
 
-        print 'loading data into xapian took %0.1f seconds. %0.1f total' % (time.time() - st, time.time() - begin)
+        #print 'loading data into xapian took %0.1f seconds. %0.1f total' % (time.time() - st, time.time() - begin)
