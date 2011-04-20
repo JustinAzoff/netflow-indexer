@@ -2,11 +2,10 @@
 import os
 import sys
 import xapian
-import struct
 import itertools
 import time
 
-from socket import inet_pton, inet_aton, AF_INET6
+from netflowindexer.util import serialize_ip
 
 class BaseIndexer:
     def __init__(self, cfg_data):
@@ -27,18 +26,12 @@ class BaseIndexer:
             return True
         return False
 
-    def dump_ip(self, ip):
-        if ':' in ip:
-            return inet_pton(AF_INET6, ip)
-        else:
-            return inet_aton(ip)
-
     def get_ips(self, fn):
         raise NotImplementedError()
 
     def get_bytes(self, fn):
         ips = self.get_ips(fn)
-        return map(self.dump_ip, ips)
+        return map(serialize_ip, ips)
 
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""

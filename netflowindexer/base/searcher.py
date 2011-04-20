@@ -4,8 +4,7 @@ import os
 import xapian
 import IPy
 
-import struct
-from socket import inet_pton, inet_aton, inet_ntoa, inet_ntop, AF_INET6
+from netflowindexer.util import serialize_ip, deserialize_ip
 
 class BaseSearcher:
     def __init__(self, db):
@@ -31,24 +30,12 @@ class BaseSearcher:
                 if len(net) < 300:
                     words.extend(net)
             else :
-                words.append(self.convert_ip(ip))
+                words.append(serialize_ip(ip))
         return self.do_search(words)
-
-    def convert_ip(self, ip):
-        if ':' in ip:
-            return inet_pton(AF_INET6, ip)
-        else:
-            return inet_aton(ip)
-
-    def restore_ip(self, s):
-        if len(s) == 4:
-            return inet_ntoa(s)
-        else:
-            return inet_ntop(AF_INET6, s)
 
     def ips_from_network(self, network):
         #FIXME: a /24 should do two /23 searches, not 1/16
-        net = self.convert_ip(str(network.net()))
+        net = serialize_ip(str(network.net()))
         strip = network.prefixlen()/8
         prefix = net[:strip]
 
@@ -60,11 +47,11 @@ class BaseSearcher:
            Doesn't bother using the database for tiny networks"""
         network = IPy.IP(netmask)
         if network.len() < 32:
-            return [self.convert_ip(ip) for ip in network]
+            return [serialize_ip(ip) for ip in network]
         ips = self.ips_from_network(network)
 
         if network.prefixlen() % 8 !=0:
-            ips = [ip for ip in ips if IPy.IP(self.restore_ip(ip)) in network]
+            ips = [ip for ip in ips if IPy.IP(deserialize_ip(ip)) in network]
         return ips
 
     def docid_to_date(self, fn):
