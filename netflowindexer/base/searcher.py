@@ -47,7 +47,7 @@ class BaseSearcher:
            Doesn't bother using the database for tiny networks"""
         network = IPy.IP(netmask)
         if network.len() < 32:
-            return [serialize_ip(ip) for ip in network]
+            return [serialize_ip(str(ip)) for ip in network]
         ips = self.ips_from_network(network)
 
         if network.prefixlen() % 8 !=0:
