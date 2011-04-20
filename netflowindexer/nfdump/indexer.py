@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import os
-import sys
+from struct import pack
 
 from netflowindexer.base.indexer import BaseIndexer
-
-from struct import pack
 
 class NFDUMPIndexer(BaseIndexer):
     def get_bytes(self, fn):

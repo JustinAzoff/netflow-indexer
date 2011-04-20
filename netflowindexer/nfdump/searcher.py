@@ -1,5 +1,4 @@
 import datetime
-import sys
 import os
 
 from netflowindexer.base.searcher import BaseSearcher

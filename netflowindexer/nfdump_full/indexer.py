@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-import os
-import sys
-
 from netflowindexer.nfdump.indexer import NFDUMPIndexer
 
 class NFDUMPFullIndexer(NFDUMPIndexer):
