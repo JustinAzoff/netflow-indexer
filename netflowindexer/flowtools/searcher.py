@@ -11,7 +11,13 @@ class FlowToolsSearcher(BaseSearcher):
         return datetime.datetime.strptime(t,'%Y-%m-%d.%H')
 
     def search(self, ips, dump=False, filter=None):
-        ip_filter = ' or '.join('host = %s' % ip for ip in ips)
+        def make_filter(ip):
+            if '/' in ip:
+                return 'net = %s' % ip
+            else :
+                return 'host = %s' % ip
+
+        ip_filter = ' or '.join(make_filter(ip) for ip in ips)
         if filter:
             ip_filter = "(%s) and (%s)" % (ip_filter, filter)
 
