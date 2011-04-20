@@ -29,7 +29,7 @@ class BaseIndexer:
 
     def dump_ip(self, ip):
         if ':' in ip:
-            return net_pton(AF_INET6, ip)
+            return inet_pton(AF_INET6, ip)
         else:
             return inet_aton(ip)
 
