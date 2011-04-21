@@ -10,15 +10,22 @@ class NFDUMPSearcher(BaseSearcher):
         t = fn[-10:]
         return datetime.datetime.strptime(t,'%Y%m%d%H')
 
+    def any_ipv6(self, ips):
+        return bool([1 for ip in ips if ':' in ip])
+
     def show(self, doc, filter):
         start = doc + '00'
         end = os.path.basename(doc) + '55'
-        os.system("nfdump -q -R %s:%s '%s'"  % (start,end, filter))
+        os.system("nfdump %s -q -R %s:%s '%s'"  % (self.ipv6_flag, start,end, filter))
 
     def search(self, ips, dump=False, filter=None):
         ip_filter = 'ip in [%s]' % ' '.join(ips)
         if filter:
             ip_filter = "%s AND (%s)" % (ip_filter, filter)
+
+        self.ipv6_flag = ""
+        if self.any_ipv6(ips):
+            self.ipv6_flag = "-6"
 
         docs = sorted(list(self.search_ips(ips)))
         if not dump:

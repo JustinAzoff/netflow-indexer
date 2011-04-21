@@ -12,6 +12,6 @@ class NFDUMPFullSearcher(NFDUMPSearcher):
         return datetime.datetime.strptime(t,'%Y%m%d%H%M')
 
     def show(self, doc, filter):
-        os.system("nfdump -q -r %s '%s'"  % (doc, filter))
+        os.system("nfdump %s -q -r %s '%s'"  % (self.ipv6_flag, doc, filter))
 
 searcher_class = NFDUMPFullSearcher
