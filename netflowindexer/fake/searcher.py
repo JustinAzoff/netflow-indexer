@@ -12,7 +12,7 @@ class FakeSearcher(BaseSearcher):
 
     def search(self, ips, dump=False, filter=None):
 
-        docs = sorted(list(self.search_ips(ips)))
+        docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
                 print self.docid_to_date(doc)

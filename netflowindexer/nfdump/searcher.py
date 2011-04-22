@@ -27,7 +27,7 @@ class NFDUMPSearcher(BaseSearcher):
         if self.any_ipv6(ips):
             self.ipv6_flag = "-6"
 
-        docs = sorted(list(self.search_ips(ips)))
+        docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
                 print self.docid_to_date(doc)

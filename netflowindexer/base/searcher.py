@@ -17,9 +17,12 @@ class BaseSearcher:
         enquire.set_query(query)
         matches = enquire.get_mset(0, 2000)
 
+        results = []
         for match in matches:
             doc = match.document.get_data()
-            yield doc
+            results.append(doc)
+        results.sort(key=os.path.basename)
+        return results
 
     def search_ips(self, ips):
         words = []

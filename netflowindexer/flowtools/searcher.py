@@ -21,7 +21,7 @@ class FlowToolsSearcher(BaseSearcher):
         if filter:
             ip_filter = "(%s) and (%s)" % (ip_filter, filter)
 
-        docs = sorted(list(self.search_ips(ips)))
+        docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
                 print self.docid_to_date(doc)
