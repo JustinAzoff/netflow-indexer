@@ -4,9 +4,11 @@ Installation
 Install prerequisites
 ---------------------
 
-netflow indexer uses the python xapian bindings.  On debian you can install this using::
+netflow indexer uses the python xapian bindings.  The IPy module is used for
+some subnet calculations to support CIDR searching.  On debian you can install
+all the dependencies using::
 
-    # apt-get install python-pip python-xapian xapian-tools 
+    # apt-get install python-pip python-xapian xapian-tools  python-ipy
 
 Install netflow-indexer
 -----------------------
