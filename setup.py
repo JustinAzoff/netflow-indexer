@@ -19,6 +19,7 @@ setup(name='netflowindexer',
       zip_safe=True,
       install_requires=[
           # -*- Extra requirements: -*-
+          "IPy"
       ],
       entry_points = {
         'console_scripts': [
