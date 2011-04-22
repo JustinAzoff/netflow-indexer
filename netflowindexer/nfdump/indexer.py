@@ -6,7 +6,7 @@ from netflowindexer.base.indexer import BaseIndexer
 
 class NFDUMPIndexer(BaseIndexer):
     def get_bytes(self, fn):
-        cmd = ["nfdump", "-q", "-o", "pipe", "-r", fn]
+        cmd = ["nfdump", "-q", "-o", "pipe", "-A", "srcip,dstip", "-a", "-r", fn]
         ips = set()
         update = ips.update
         for line in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout:
