@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-import os
+import subprocess
 from struct import pack
 
 from netflowindexer.base.indexer import BaseIndexer
 
 class NFDUMPIndexer(BaseIndexer):
     def get_bytes(self, fn):
-        cmd = "nfdump -r '%s' -q -o pipe" % fn
+        cmd = ["nfdump", "-q", "-o", "pipe", "-r", fn]
         ips = set()
         update = ips.update
-        for line in os.popen(cmd):
+        for line in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout:
             parts = line.split("|")
             if parts[6:9] != ['0','0','0']: #ipv6
                 sa = pack(">LLLL", int(parts[6]),  int(parts[7]),  int(parts[8]),  int(parts[9]))
