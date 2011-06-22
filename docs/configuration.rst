@@ -51,13 +51,13 @@ daily compaction is a work in progress
 
 
 examples/daily_compact.sh
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: ../examples/daily_compact.sh
     :literal:
 
 examples/xap_compact.sh
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: ../examples/xap_compact.sh
     :literal:
