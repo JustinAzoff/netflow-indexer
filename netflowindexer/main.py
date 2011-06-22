@@ -38,7 +38,8 @@ def get_searcher(indexer_type):
 def do_search(indexer_type, database, ips, dump=None,filter=None):
     searcher = get_searcher(indexer_type)
     s = searcher(database)
-    return s.search(ips, dump, filter)
+    for line in s.search(ips, dump, filter):
+        print line
 
 def search():
     from optparse import OptionParser

@@ -16,7 +16,8 @@ class NFDUMPSearcher(BaseSearcher):
     def show(self, doc, filter):
         start = doc + '00'
         end = os.path.basename(doc) + '55'
-        os.system("nfdump %s -q -R %s:%s '%s'"  % (self.ipv6_flag, start,end, filter))
+        for line in os.popen("nfdump %s -q -R %s:%s '%s'"  % (self.ipv6_flag, start,end, filter)):
+            yield line.rstrip()
 
     def search(self, ips, dump=False, filter=None):
         ip_filter = 'ip in [%s]' % ' '.join(ips)
@@ -30,9 +31,10 @@ class NFDUMPSearcher(BaseSearcher):
         docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
-                print self.docid_to_date(doc)
+                yield self.docid_to_date(doc)
         else:
             for doc in docs:
-                self.show(doc, ip_filter)
+                for line in self.show(doc, ip_filter):
+                    yield line
 
 searcher_class = NFDUMPSearcher

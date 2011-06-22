@@ -10,6 +10,10 @@ class FlowToolsSearcher(BaseSearcher):
         t = fn[-13:]
         return datetime.datetime.strptime(t,'%Y-%m-%d.%H')
 
+    def show(self, doc, filter):
+        for line in os.popen("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter)):
+            yield line.rstrip()
+
     def search(self, ips, dump=False, filter=None):
         def make_filter(ip):
             if '/' in ip:
@@ -24,9 +28,10 @@ class FlowToolsSearcher(BaseSearcher):
         docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
-                print self.docid_to_date(doc)
+                yield self.docid_to_date(doc)
         else:
             for doc in docs:
-                os.system("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter))
+                for line in self.show(doc, ip_filter):
+                    yield line
 
 searcher_class = FlowToolsSearcher
