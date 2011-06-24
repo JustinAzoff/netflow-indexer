@@ -32,6 +32,6 @@ class FlowToolsSearcher(BaseSearcher):
         else:
             for doc in docs:
                 for line in self.show(doc, ip_filter):
-                    yield line
+                    yield line.rstrip()
 
 searcher_class = FlowToolsSearcher
