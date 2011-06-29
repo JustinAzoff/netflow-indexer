@@ -12,7 +12,7 @@ Example
 -------
 The `Searcher` class can be used to search for records::
 
-    from netflowindexer.main import Searcher
+    from netflowindexer import Searcher
     s = Searcher("/spare/tmp/netflow/nfdump.ini")
     print s.list_databases()
     ['/spare/tmp/netflow/20110408.db']
@@ -44,7 +44,7 @@ Searching with pynfdump
 
 You can easily use netflow indexer with pynfdump::
 
-    from netflowindexer.main import Searcher
+    from netflowindexer import Searcher
     import pynfdump
     d=pynfdump.Dumper()
     s = Searcher("/spare/tmp/netflow/nfdump.ini")
