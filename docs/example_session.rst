@@ -39,7 +39,7 @@ Searching the index
 Search the index for 2011-04-18::
 
     # 59.124.163.60 is an address that just scanned us
-    remote@nf:~$ time netflow-index-search -i nfdump_full /data/nfdump_xap/20110419.db 59.124.163.60
+    remote@nf:~$ time netflow-index-search /data/nfdump_xap/nfdump.ini /data/nfdump_xap/20110419.db 59.124.163.60
     2011-04-19 05:35:00
     2011-04-19 05:40:00
     2011-04-19 05:45:00

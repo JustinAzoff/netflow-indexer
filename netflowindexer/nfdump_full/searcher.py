@@ -11,8 +11,11 @@ class NFDUMPFullSearcher(NFDUMPSearcher):
         t = fn[-12:]
         return datetime.datetime.strptime(t,'%Y%m%d%H%M')
 
-    def show(self, doc, filter):
-        for line in os.popen("nfdump %s -q -r %s '%s'"  % (self.ipv6_flag, doc, filter)):
+    def show(self, doc, filter, mode=None):
+        pipe = ""
+        if mode=="pipe":
+            pipe = "-o pipe"
+        for line in os.popen("nfdump %s %s -q -r %s '%s'"  % (self.ipv6_flag, pipe, doc, filter)):
             yield line.rstrip()
 
 searcher_class = NFDUMPFullSearcher

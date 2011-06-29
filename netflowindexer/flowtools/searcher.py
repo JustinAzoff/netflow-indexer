@@ -14,7 +14,7 @@ class FlowToolsSearcher(BaseSearcher):
         for line in os.popen("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter)):
             yield line.rstrip()
 
-    def search(self, ips, dump=False, filter=None):
+    def search(self, ips, dump=False, filter=None, mode=None):
         def make_filter(ip):
             if '/' in ip:
                 return 'net = %s' % ip
