@@ -1,5 +1,6 @@
 import datetime
 import os
+import subprocess
 
 from netflowindexer.base.searcher import BaseSearcher
 
@@ -17,11 +18,16 @@ class NFDUMPSearcher(BaseSearcher):
         start = doc + '00'
         end = os.path.basename(doc) + '55'
 
-        pipe = ""
-        if mode=="pipe":
-            pipe = "-o pipe"
+        command = ["nfdump", "-q"]
 
-        for line in os.popen("nfdump %s %s -q -R %s:%s '%s'"  % (self.ipv6_flag, pipe, start,end, filter)):
+        if mode=="pipe":
+            command.extend(["-o", "pipe"])
+        if self.need_ipv6:
+            command.append("-6")
+        command.extend(["-R", start, end])
+        command.append(filter)
+
+        for line in subprocess.Popen(command, stdout=subprocess.PIPE).stdout:
             yield line.rstrip()
 
     def search(self, ips, dump=False, filter=None, mode=None):
@@ -29,9 +35,7 @@ class NFDUMPSearcher(BaseSearcher):
         if filter:
             ip_filter = "%s AND (%s)" % (ip_filter, filter)
 
-        self.ipv6_flag = ""
-        if self.any_ipv6(ips):
-            self.ipv6_flag = "-6"
+        self.need_ipv6 = self.any_ipv6(ips)
 
         docs = self.search_ips(ips)
         if not dump:
