@@ -20,3 +20,5 @@ pip-log.txt
 
 #test databases
 *.db
+
+docs/_build
