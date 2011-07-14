@@ -16,6 +16,7 @@ Contents:
    installation
    configuration
    example_session
+   api
 
 Indices and tables
 ==================

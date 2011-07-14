@@ -1,3 +1,7 @@
 # Sphinx inventory version 1
 # Project: netflow-indexer
 # Version: 0.1
+netflowindexer.main.Searcher.list_databases method api.html
+netflowindexer.main.Searcher.search_all method api.html
+netflowindexer.main.Searcher class api.html
+netflowindexer.main.Searcher.search method api.html

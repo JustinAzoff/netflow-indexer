@@ -20,6 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="netflow-indexer v0.1 documentation" href="index.html" />
+    <link rel="next" title="API" href="api.html" />
     <link rel="prev" title="Configuration" href="configuration.html" /> 
   </head>
   <body>
@@ -29,6 +30,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api.html" title="API"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="configuration.html" title="Configuration"
              accesskey="P">previous</a> |</li>
@@ -76,7 +80,7 @@ loading data into xapian took 8.8 seconds</pre>
 <h2>Searching the index<a class="headerlink" href="#searching-the-index" title="Permalink to this headline">¶</a></h2>
 <p>Search the index for 2011-04-18:</p>
 <div class="highlight-python"><pre># 59.124.163.60 is an address that just scanned us
-remote@nf:~$ time netflow-index-search -i nfdump_full /data/nfdump_xap/20110419.db 59.124.163.60
+remote@nf:~$ time netflow-index-search /data/nfdump_xap/nfdump.ini /data/nfdump_xap/20110419.db 59.124.163.60
 2011-04-19 05:35:00
 2011-04-19 05:40:00
 2011-04-19 05:45:00
@@ -135,6 +139,9 @@ automatically runs the appropriate netflow tool for you:</p>
             <h4>Previous topic</h4>
             <p class="topless"><a href="configuration.html"
                                   title="previous chapter">Configuration</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="api.html"
+                                  title="next chapter">API</a></p>
             <h3>This Page</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/example_session.txt"
@@ -163,6 +170,9 @@ automatically runs the appropriate netflow tool for you:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="api.html" title="API"
+             >next</a> |</li>
         <li class="right" >
           <a href="configuration.html" title="Configuration"
              >previous</a> |</li>

@@ -5,7 +5,7 @@ Netflow-indexer uses a small configuration file that setups the type of
 indexer to use and the location of the files on disk.  It has the following
 settings:
 
-* indexer - the type of indexer to use. `nfdump`, `nfdump_full` or `flowtools`
+* indexer - the type of indexer to use. `nfdump`, `nfdump_full`, `flowtools`, or `flowtools_full`
 * dbpath  - the path to save the indexes to
 * fileglob - the shell glob that will expand to the flow data files for the
   current hour
@@ -51,13 +51,13 @@ daily compaction is a work in progress
 
 
 examples/daily_compact.sh
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: ../examples/daily_compact.sh
     :literal:
 
 examples/xap_compact.sh
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: ../examples/xap_compact.sh
     :literal:
