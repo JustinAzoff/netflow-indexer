@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; netflow-indexer v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="netflow-indexer v0.1 documentation" href="index.html" />
+    <link rel="prev" title="Example Session" href="example_session.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="example_session.html" title="Example Session"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="searching-with-the-api">
+<h2>Searching with the API<a class="headerlink" href="#searching-with-the-api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="netflowindexer.main.Searcher">
+<em class="property">class </em><tt class="descclassname">netflowindexer.main.</tt><tt class="descname">Searcher</tt><big>(</big><em>ini_file</em><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new searcher instance.  Call with the path to the ini file</p>
+<dl class="method">
+<dt id="netflowindexer.main.Searcher.list_databases">
+<tt class="descname">list_databases</tt><big>(</big><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher.list_databases" title="Permalink to this definition">¶</a></dt>
+<dd>Return a list of database files in the &#8216;dbpath&#8217; directory</dd></dl>
+
+<dl class="method">
+<dt id="netflowindexer.main.Searcher.search">
+<tt class="descname">search</tt><big>(</big><em>database</em>, <em>ips</em>, <em>dump=False</em>, <em>filter=None</em>, <em>mode=None</em><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search a specific database file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>database</em> &#8211; The full path to a database file.</li>
+<li><em>ips</em> &#8211; a list of ip addresses to search for.</li>
+<li><em>dump</em> &#8211; if True dump the full netflow records, otherwise just the seen timeslots</li>
+<li><em>filter</em> &#8211; optional additional netflow search filter to be used when dump=True</li>
+<li><em>mode</em> &#8211; set to &#8216;pipe&#8217; to have nfdump list pipe delimited records</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="netflowindexer.main.Searcher.search_all">
+<tt class="descname">search_all</tt><big>(</big><em>ips</em>, <em>dump=False</em>, <em>filter=None</em>, <em>mode=None</em><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher.search_all" title="Permalink to this definition">¶</a></dt>
+<dd>Search all database files. Takes the same parameters as <tt class="xref docutils literal"><span class="pre">search()</span></tt></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>Searcher</cite> class can be used to search for records:</p>
+<div class="highlight-python"><pre>from netflowindexer import Searcher
+s = Searcher("/spare/tmp/netflow/nfdump.ini")
+print s.list_databases()
+['/spare/tmp/netflow/20110408.db']
+
+for record in s.search_all(['8.8.8.8']):
+    print record
+2011-04-08 15:00:00
+2011-04-08 15:05:00
+2011-04-08 15:10:00
+2011-04-08 15:15:00
+2011-04-08 15:20:00
+...
+
+for record in s.search_all(['8.8.8.8'], dump=True):
+    print record
+2011-04-08 14:59:32.696     0.000 UDP     111.222.121.54:53241 -&gt;          8.8.8.8:53           2      138     1
+2011-04-08 14:59:32.708     0.028 UDP            8.8.8.8:53    -&gt;   111.222.121.54:53241        2      266     1
+2011-04-08 14:59:38.416     0.000 UDP     111.222.121.127:51528 -&gt;          8.8.8.8:53          1       77     1
+2011-04-08 14:59:38.396     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:51528       1      165     1
+2011-04-08 14:59:38.400     0.000 UDP     111.222.121.127:60043 -&gt;          8.8.8.8:53          1       77     1
+2011-04-08 14:59:38.368     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:60043       1      151     1
+2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:60128 -&gt;          8.8.8.8:53           1       85     1
+2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:63357 -&gt;          8.8.8.8:53           1       86     1</pre>
+</div>
+</div>
+<div class="section" id="searching-with-pynfdump">
+<h2>Searching with pynfdump<a class="headerlink" href="#searching-with-pynfdump" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://packages.python.org/pynfdump/">pynfdump</a> is another module I have written.</p>
+<p>You can easily use netflow indexer with pynfdump:</p>
+<div class="highlight-python"><pre>from netflowindexer import Searcher
+import pynfdump
+d=pynfdump.Dumper()
+s = Searcher("/spare/tmp/netflow/nfdump.ini")
+records = s.search_all(["8.8.8.8"], dump=True, filter='dst port 53', mode='pipe')
+for rec in d.parse_search(records):
+    print rec['dstip'], rec['bytes']
+8.8.8.8 138
+8.8.8.8 77
+8.8.8.8 77
+8.8.8.8 85
+8.8.8.8 86
+8.8.8.8 85
+8.8.8.8 86
+8.8.8.8 86
+8.8.8.8 55
+8.8.8.8 55
+8.8.8.8 68</pre>
+</div>
+<p>The above example used netflowindexer to find all flows to 8.8.8.8, then used
+nfdump to filter it by &#8216;dst port 53&#8217;, and finally handed it off to pynfdump for
+parsing.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">API</a><ul>
+<li><a class="reference external" href="#searching-with-the-api">Searching with the API</a></li>
+<li><a class="reference external" href="#example">Example</a></li>
+<li><a class="reference external" href="#searching-with-pynfdump">Searching with pynfdump</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="example_session.html"
+                                  title="previous chapter">Example Session</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/api.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="example_session.html" title="Example Session"
+             >previous</a> |</li>
+        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2011, Justin Azoff.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>
