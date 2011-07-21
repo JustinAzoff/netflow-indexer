@@ -10,3 +10,14 @@ def deserialize_ip(bytes):
         return inet_ntoa(bytes)
     else:
         return inet_ntop(AF_INET6, bytes)
+
+import datetime, time
+def strptime_24(str, fmt):
+    t = time.strptime(str, fmt)
+    return datetime.datetime(*t[:6])
+
+#strptime compatibility for python 2.4
+if hasattr(datetime.datetime, 'strptime'):
+    strptime = datetime.datetime.strptime
+else:
+    strptime = strptime_24

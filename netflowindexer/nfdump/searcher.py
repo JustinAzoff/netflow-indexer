@@ -3,13 +3,14 @@ import os
 import subprocess
 
 from netflowindexer.base.searcher import BaseSearcher
+from netflowindexer import util
 
 class NFDUMPSearcher(BaseSearcher):
     def docid_to_date(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.2009030110 into
         a date of 2009-03-01 10:00"""
         t = fn[-10:]
-        return datetime.datetime.strptime(t,'%Y%m%d%H')
+        return util.strptime(t,'%Y%m%d%H')
 
     def any_ipv6(self, ips):
         return bool([1 for ip in ips if ':' in ip])

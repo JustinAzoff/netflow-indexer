@@ -3,12 +3,13 @@ import sys
 import os
 
 from netflowindexer.base.searcher import BaseSearcher
+from netflowindexer import util
 
 class FakeSearcher(BaseSearcher):
     def docid_to_date(self, fn):
         """turn ips.2011-04-15-12.txt into a date"""
         t = fn[-13:]
-        return datetime.datetime.strptime(t,'%Y-%m-%d-%H')
+        return util.strptime(t,'%Y-%m-%d-%H')
 
     def search(self, ips, dump=False, filter=None):
 

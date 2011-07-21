@@ -2,13 +2,14 @@ import datetime
 import sys
 import os
 from netflowindexer.base.searcher import BaseSearcher
+from netflowindexer import util
 
 class FlowToolsSearcher(BaseSearcher):
     def docid_to_date(self, fn):
         """turn /usr/local/var/db/flows/packeteer/2009/2009-03/2009-03-27/ft-v05.2009-03-27.16 into
         a date of 2009-03-27 16:00"""
         t = fn[-13:]
-        return datetime.datetime.strptime(t,'%Y-%m-%d.%H')
+        return util.strptime(t,'%Y-%m-%d.%H')
 
     def show(self, doc, filter):
         for line in os.popen("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter)):
