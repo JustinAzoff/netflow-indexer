@@ -1,7 +1,3 @@
-import datetime
-import sys
-import os
-
 from netflowindexer.flowtools.searcher import FlowToolsSearcher
 from netflowindexer import util
 

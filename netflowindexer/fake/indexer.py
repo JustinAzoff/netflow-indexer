@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-import os
-import sys
-import IPy
-
 from netflowindexer.base.indexer import BaseIndexer
 
 class FakeIndexer(BaseIndexer):

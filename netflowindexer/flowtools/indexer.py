@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import sys
 
 from netflowindexer.base.indexer import BaseIndexer
 
