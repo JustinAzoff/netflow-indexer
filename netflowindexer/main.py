@@ -73,9 +73,9 @@ def search():
         help="filter to use when dumping flows with the -d option")
 
     (options, args) = parser.parse_args()
-    ini = args[0]
-    db = args[1]
-    ips = args[2:]
+    ini = args and  args[0]
+    db = len(args) > 1 and args[1]
+    ips = len(args) > 2 and args[2:]
     if not (ini and db and ips):
         parser.print_help()
         return 1
