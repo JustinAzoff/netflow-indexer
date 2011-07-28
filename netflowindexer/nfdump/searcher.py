@@ -24,7 +24,8 @@ class NFDUMPSearcher(BaseSearcher):
             command.extend(["-o", "pipe"])
         if self.need_ipv6:
             command.append("-6")
-        command.extend(["-R", start, end])
+        file_option = "%s:%s" % (start, end)
+        command.extend(["-R", file_option])
         command.append(filter)
 
         for line in subprocess.Popen(command, stdout=subprocess.PIPE).stdout:
