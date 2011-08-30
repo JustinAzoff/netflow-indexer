@@ -10,7 +10,7 @@ class FlowToolsSearcher(BaseSearcher):
         return util.strptime(t,'%Y-%m-%d.%H')
 
     def show(self, doc, filter):
-        for line in os.popen("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, ip_filter)):
+        for line in os.popen("flow-cat %s* | flow-extract -n -e '%s {print}'" % (doc, filter)):
             yield line.rstrip()
 
     def search(self, ips, dump=False, filter=None, mode=None):
