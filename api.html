@@ -116,22 +116,18 @@ for record in s.search_all(['8.8.8.8'], dump=True):
 <h2>File metadata<a class="headerlink" href="#file-metadata" title="Permalink to this headline">¶</a></h2>
 <p>Search results are actually an object. str() will return simply the time of the
 matching flow records, but there are other fields available:</p>
-<blockquote>
-<dl class="docutils">
-<dt>for record in s.search_all([&#8216;8.8.8.8&#8217;]):</dt>
-<dd>print repr(record)</dd>
-</dl>
-<p>SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
+<div class="highlight-python"><pre>for record in s.search_all(['8.8.8.8']):
+    print repr(record)
+SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
 SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)
-SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)</p>
-<dl class="docutils">
-<dt>for record in s.search_all([&#8216;8.8.8.8&#8217;]):</dt>
-<dd>print record.time, record.profile</dd>
-</dl>
-<p>2011-04-08 15:00:00 tmp
+SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)
+
+for record in s.search_all(['8.8.8.8']):
+    print record.time, record.profile
+2011-04-08 15:00:00 tmp
 2011-04-08 15:05:00 tmp
-2011-04-08 15:10:00 tmp</p>
-</blockquote>
+2011-04-08 15:10:00 tmp</pre>
+</div>
 <p>These field extractions are done via the <cite>pathregex</cite> configuration option.</p>
 </div>
 <div class="section" id="searching-with-pynfdump">

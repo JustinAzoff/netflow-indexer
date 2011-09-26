@@ -40,7 +40,7 @@ The `Searcher` class can be used to search for records::
 File metadata
 -------------
 Search results are actually an object. str() will return simply the time of the
-matching flow records, but there are other fields available:
+matching flow records, but there are other fields available::
 
     for record in s.search_all(['8.8.8.8']):
         print repr(record)
