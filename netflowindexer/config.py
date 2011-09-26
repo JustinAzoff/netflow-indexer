@@ -1,6 +1,9 @@
 import ConfigParser
 import datetime
 
+from netflowindexer.util import str_to_regex
+import re
+
 def read_config(fn):
     now = datetime.datetime.now() - datetime.timedelta(minutes=10)
 
@@ -12,7 +15,13 @@ def read_config(fn):
     }
     c = ConfigParser.ConfigParser(defaults=defaults)
     c.read(fn)
-    return dict(c.items("nfi"))
+    config = dict(c.items("nfi"))
+    if 'pathregex' in config:
+        if ':' in config['pathregex']:
+            config['pathregex'] = str_to_regex(config['pathregex'])
+        config['pathregex'] = re.compile(config['pathregex'])
+
+    return config
 
 if __name__ == "__main__":
     import pprint, sys

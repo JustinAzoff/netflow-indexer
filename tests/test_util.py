@@ -13,6 +13,7 @@ def serde_case(ip):
     eq_(ip,other)
 
 from netflowindexer.util import str_to_regex
+import re
 
 def test_str_to_regex():
     tests = (
@@ -24,3 +25,12 @@ def test_str_to_regex():
 
 def str_to_regex_case(input, output):
     eq_(str_to_regex(input), output)
+
+def test_str_to_regex_usage():
+    filename = "/data/nfsen/profiles/live/podium/nfcapd.201109010000"
+
+    regex = str_to_regex("profiles/:profile/:source/nfcapd")
+
+    groups = re.search(regex, filename).groupdict()
+    eq_(groups['profile'], 'live')
+    eq_(groups['source'], 'podium')

@@ -25,6 +25,9 @@ else:
 
 import re
 def str_to_regex(input):
+    """Convert a string like /path/to/:profile/foo/bar into a regex that will
+    extract "profile"
+    """
     def _sub(match):
         key = match.groups()[0]
         return '(?P<%s>[^/]+)' % key

@@ -5,6 +5,23 @@ import IPy
 
 from netflowindexer.util import serialize_ip, deserialize_ip
 
+class SearchResult(dict):
+    def __init__(self, filename, date, **kwargs):
+        dict.__init__(self,kwargs)
+        self.__dict__ = self
+        self.filename = filename
+        self.date = date
+
+    def __str__(self):
+        return str(self.date)
+
+    def __repr__(self):
+        others = ', '.join(["%s=%s" % (k,v) for (k,v) in self.items() if k not in ('filename','date')])
+        if others:
+            others = ", " + others
+        s = "SearchResult(filename=%s, date=%s%s)" % (self.filename, self.date, others)
+        return s
+
 class BaseSearcher:
     def __init__(self, db):
         self.database = xapian.Database(db)
@@ -60,3 +77,15 @@ class BaseSearcher:
         """turn /data/nfsen/profiles/live/podium/nfcapd.2009030110 into
         a date of 2009-03-01 10:00"""
         raise NotImplementedError()
+
+    def docid_to_searchresult(self, fn):
+        """return /data/nfsen/profiles/live/podium/nfcapd.2009030110 into an object containing
+            filename - the full filename
+            date - the parsed date
+            any fields extracted from the pathregex
+        """
+        date = self.docid_to_date(fn)
+        path_info = {}
+        if 'pathregex' in self.cfgdata:
+            path_info = self.cfgdata['pathregex'].search(fn).groupdict()
+        return SearchResult(fn, date, **path_info)

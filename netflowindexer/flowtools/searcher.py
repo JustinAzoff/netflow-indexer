@@ -27,7 +27,7 @@ class FlowToolsSearcher(BaseSearcher):
         docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
-                yield self.docid_to_date(doc)
+                yield docid_to_searchresult(doc)
         else:
             for doc in docs:
                 for line in self.show(doc, ip_filter):

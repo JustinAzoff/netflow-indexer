@@ -55,6 +55,7 @@ class Searcher:
         :param mode: set to 'pipe' to have nfdump list pipe delimited records
         """
         s = self.searcher(database)
+        s.cfgdata = self.cfgdata
         for rec in s.search(ips, dump, filter, mode):
             yield rec
 
