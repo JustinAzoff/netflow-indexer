@@ -21,3 +21,12 @@ if hasattr(datetime.datetime, 'strptime'):
     strptime = datetime.datetime.strptime
 else:
     strptime = strptime_24
+
+
+import re
+def str_to_regex(input):
+    def _sub(match):
+        key = match.groups()[0]
+        return '(?P<%s>[^/]+)' % key
+
+    return re.sub(":([^/]+)", _sub, input)

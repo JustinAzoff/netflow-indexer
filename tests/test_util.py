@@ -11,3 +11,16 @@ def test_serde():
 def serde_case(ip):
     other = deserialize_ip(serialize_ip(ip))
     eq_(ip,other)
+
+from netflowindexer.util import str_to_regex
+
+def test_str_to_regex():
+    tests = (
+        ('/foo/:bar/baz', '/foo/(?P<bar>[^/]+)/baz'),
+    )
+
+    for input, output in tests:
+        yield str_to_regex_case, input, output
+
+def str_to_regex_case(input, output):
+    eq_(str_to_regex(input), output)
