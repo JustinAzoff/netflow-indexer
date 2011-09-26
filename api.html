@@ -112,6 +112,28 @@ for record in s.search_all(['8.8.8.8'], dump=True):
 2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:63357 -&gt;          8.8.8.8:53           1       86     1</pre>
 </div>
 </div>
+<div class="section" id="file-metadata">
+<h2>File metadata<a class="headerlink" href="#file-metadata" title="Permalink to this headline">¶</a></h2>
+<p>Search results are actually an object. str() will return simply the time of the
+matching flow records, but there are other fields available:</p>
+<blockquote>
+<dl class="docutils">
+<dt>for record in s.search_all([&#8216;8.8.8.8&#8217;]):</dt>
+<dd>print repr(record)</dd>
+</dl>
+<p>SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
+SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)
+SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)</p>
+<dl class="docutils">
+<dt>for record in s.search_all([&#8216;8.8.8.8&#8217;]):</dt>
+<dd>print record.time, record.profile</dd>
+</dl>
+<p>2011-04-08 15:00:00 tmp
+2011-04-08 15:05:00 tmp
+2011-04-08 15:10:00 tmp</p>
+</blockquote>
+<p>These field extractions are done via the <cite>pathregex</cite> configuration option.</p>
+</div>
 <div class="section" id="searching-with-pynfdump">
 <h2>Searching with pynfdump<a class="headerlink" href="#searching-with-pynfdump" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://packages.python.org/pynfdump/">pynfdump</a> is another module I have written.</p>
@@ -152,6 +174,7 @@ parsing.</p>
 <li><a class="reference external" href="#">API</a><ul>
 <li><a class="reference external" href="#searching-with-the-api">Searching with the API</a></li>
 <li><a class="reference external" href="#example">Example</a></li>
+<li><a class="reference external" href="#file-metadata">File metadata</a></li>
 <li><a class="reference external" href="#searching-with-pynfdump">Searching with pynfdump</a></li>
 </ul>
 </li>

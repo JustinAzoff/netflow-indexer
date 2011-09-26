@@ -56,9 +56,22 @@ settings:</p>
 <li>fileglob - the shell glob that will expand to the flow data files for the
 current hour</li>
 <li>allfileglob - the shell glob that will expand to all flow data files</li>
+<li>pathregex - a regular expression or simple string used to extract metadata from flow file paths.</li>
 </ul>
 <div class="section" id="example-configuration-files">
 <h2>Example Configuration files<a class="headerlink" href="#example-configuration-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nfdump-using-full-indexing-recommended">
+<h3>nfdump using full indexing(recommended)<a class="headerlink" href="#nfdump-using-full-indexing-recommended" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>[nfi]
+indexer = nfdump_full
+dbpath = /data/nfdump_xap
+flowpath = /data/nfsen/profiles/live/podium
+fileglob = %(flowpath)s/nfcapd.%(year)s%(month)s%(day)s*
+allfileglob = %(flowpath)s/nfcapd.*
+pathregex = /profiles/:profile/:source/nfcapd
+</pre>
+</div>
+</div>
 <div class="section" id="nfdump">
 <h3>nfdump<a class="headerlink" href="#nfdump" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><pre>[nfi]
@@ -67,17 +80,7 @@ dbpath = /data/nfdump_xap
 flowpath = /data/nfsen/profiles/live/podium
 fileglob = %(flowpath)s/nfcapd.%(year)s%(month)s%(day)s*
 allfileglob = %(flowpath)s/nfcapd.*
-</pre>
-</div>
-</div>
-<div class="section" id="nfdump-using-full-indexing">
-<h3>nfdump using full indexing<a class="headerlink" href="#nfdump-using-full-indexing" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>[nfi]
-indexer = nfdump_full
-dbpath = /data/nfdump_xap
-flowpath = /data/nfsen/profiles/live/podium
-fileglob = %(flowpath)s/nfcapd.%(year)s%(month)s%(day)s*
-allfileglob = %(flowpath)s/nfcapd.*
+pathregex = /profiles/:profile/:source/nfcapd
 </pre>
 </div>
 </div>
@@ -145,8 +148,8 @@ xapian-compact -F $orig $tmp &amp;&amp; mv $orig $tmp2 &amp;&amp; mv $tmp $orig 
             <ul>
 <li><a class="reference external" href="#">Configuration</a><ul>
 <li><a class="reference external" href="#example-configuration-files">Example Configuration files</a><ul>
+<li><a class="reference external" href="#nfdump-using-full-indexing-recommended">nfdump using full indexing(recommended)</a></li>
 <li><a class="reference external" href="#nfdump">nfdump</a></li>
-<li><a class="reference external" href="#nfdump-using-full-indexing">nfdump using full indexing</a></li>
 <li><a class="reference external" href="#flow-tools">flow-tools</a></li>
 </ul>
 </li>

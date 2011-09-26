@@ -10,21 +10,21 @@ settings:
 * fileglob - the shell glob that will expand to the flow data files for the
   current hour
 * allfileglob - the shell glob that will expand to all flow data files
+* pathregex - a regular expression or simple string used to extract metadata from flow file paths.
 
 
 Example Configuration files
 ---------------------------
 
+nfdump using full indexing(recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: ../examples/nfdump_full.ini
+    :literal:
+
 nfdump
 ~~~~~~
 .. include:: ../examples/nfdump.ini
     :literal:
-
-nfdump using full indexing
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. include:: ../examples/nfdump_full.ini
-    :literal:
-
 
 flow-tools
 ~~~~~~~~~~
