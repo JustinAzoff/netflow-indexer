@@ -6,20 +6,20 @@ import IPy
 from netflowindexer.util import serialize_ip, deserialize_ip
 
 class SearchResult(dict):
-    def __init__(self, filename, date, **kwargs):
+    def __init__(self, filename, time, **kwargs):
         dict.__init__(self,kwargs)
         self.__dict__ = self
         self.filename = filename
-        self.date = date
+        self.time = time
 
     def __str__(self):
-        return str(self.date)
+        return str(self.time)
 
     def __repr__(self):
-        others = ', '.join(["%s=%s" % (k,v) for (k,v) in self.items() if k not in ('filename','date')])
+        others = ', '.join(["%s=%s" % (k,v) for (k,v) in self.items() if k not in ('filename','time')])
         if others:
             others = ", " + others
-        s = "SearchResult(filename=%s, date=%s%s)" % (self.filename, self.date, others)
+        s = "SearchResult(filename=%s, time=%s%s)" % (self.filename, self.time, others)
         return s
 
 class BaseSearcher:
@@ -84,8 +84,8 @@ class BaseSearcher:
             date - the parsed date
             any fields extracted from the pathregex
         """
-        date = self.docid_to_date(fn)
+        time = self.docid_to_date(fn)
         path_info = {}
         if 'pathregex' in self.cfgdata:
             path_info = self.cfgdata['pathregex'].search(fn).groupdict()
-        return SearchResult(fn, date, **path_info)
+        return SearchResult(fn, time, **path_info)

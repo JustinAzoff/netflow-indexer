@@ -44,12 +44,12 @@ matching flow records, but there are other fields available:
 
     for record in s.search_all(['8.8.8.8']):
         print repr(record)
-    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, date=2011-04-08 15:00:00, profile=tmp)
-    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, date=2011-04-08 15:05:00, profile=tmp)
-    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, date=2011-04-08 15:10:00, profile=tmp)
+    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
+    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)
+    SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)
 
     for record in s.search_all(['8.8.8.8']):
-        print record.date, record.profile
+        print record.time, record.profile
     2011-04-08 15:00:00 tmp
     2011-04-08 15:05:00 tmp
     2011-04-08 15:10:00 tmp
