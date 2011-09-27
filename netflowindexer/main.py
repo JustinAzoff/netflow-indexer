@@ -66,7 +66,11 @@ class Searcher:
             for rec in self.search(db, ips, dump, filter, mode):
                 yield rec
 
-def output_records(records, columns):
+def output_records(records, columns, dump):
+    if dump:
+        for r in records:
+            print r
+        return
 
     if not columns:
         columns = ['time']
@@ -96,7 +100,7 @@ def search():
 
     searcher = Searcher(ini)
     records = searcher.search(db, ips, options.dump, options.filter)
-    output_records(records, options.columns)
+    output_records(records, options.columns, options.dump)
 
 def search_all():
     from optparse import OptionParser
@@ -116,7 +120,7 @@ def search_all():
     searcher = Searcher(args[0])
     ips = args[1:]
     records = searcher.search_all(ips, options.dump, options.filter)
-    output_records(records, options.columns)
+    output_records(records, options.columns, options.dump)
 
 def cleanup():
     from optparse import OptionParser
