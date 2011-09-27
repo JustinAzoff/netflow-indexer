@@ -34,3 +34,18 @@ def test_str_to_regex_usage():
     groups = re.search(regex, filename).groupdict()
     eq_(groups['profile'], 'live')
     eq_(groups['source'], 'podium')
+
+from netflowindexer.util import split_commas
+
+def test_split_commas():
+    expected = ['a','b','c']
+    tests = (
+        ['a,b,c'],
+        ['a','b','c'],
+        ['a', 'b,c'], 
+    )
+    for t in tests:
+        yield split_commas_case, t, expected
+
+def split_commas_case(input, output):
+    eq_(split_commas(input), output)

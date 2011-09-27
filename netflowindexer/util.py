@@ -33,3 +33,9 @@ def str_to_regex(input):
         return '(?P<%s>[^/]+)' % key
 
     return re.sub(":([^/]+)", _sub, input)
+
+def split_commas(input):
+    output = []
+    for x in input:
+        output.extend(x.split(","))
+    return output

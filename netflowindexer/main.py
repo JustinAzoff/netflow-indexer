@@ -2,6 +2,7 @@ import glob
 import os
 import shutil
 from netflowindexer import config
+from netflowindexer.util import split_commas
 
 def get_indexer(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)
@@ -65,6 +66,16 @@ class Searcher:
             for rec in self.search(db, ips, dump, filter, mode):
                 yield rec
 
+def output_records(records, columns):
+
+    if not columns:
+        columns = ['time']
+    else:
+        columns = split_commas(columns)
+
+    for r in records:
+        print ' '.join(str(getattr(r, c)) for c in columns)
+
 def search():
     from optparse import OptionParser
     parser = OptionParser(usage = "usage: %prog indexer.ini database.db [searcher_options] IP...")
@@ -72,6 +83,8 @@ def search():
         help="dump the flows, don't just print the filenames")
     parser.add_option("-f", "--filter", dest="filter", action="store", default='',
         help="filter to use when dumping flows with the -d option")
+    parser.add_option("-c", "--columns", dest="columns", action="append",
+        help="comma separated fields to include, default=time")
 
     (options, args) = parser.parse_args()
     ini = args and  args[0]
@@ -82,8 +95,8 @@ def search():
         return 1
 
     searcher = Searcher(ini)
-    for record in searcher.search(db, ips, options.dump, options.filter):
-        print record
+    records = searcher.search(db, ips, options.dump, options.filter)
+    output_records(records, options.columns)
 
 def search_all():
     from optparse import OptionParser
@@ -92,6 +105,8 @@ def search_all():
         help="dump the flows, don't just print the filenames")
     parser.add_option("-f", "--filter", dest="filter", action="store", default='',
         help="filter to use when dumping flows with the -d option")
+    parser.add_option("-c", "--columns", dest="columns", action="append",
+        help="comma separated fields to include, default=time")
 
     (options, args) = parser.parse_args()
     if len(args) < 2:
@@ -100,8 +115,8 @@ def search_all():
 
     searcher = Searcher(args[0])
     ips = args[1:]
-    for record in searcher.search_all(ips, options.dump, options.filter):
-        print record
+    records = searcher.search_all(ips, options.dump, options.filter)
+    output_records(records, options.columns)
 
 def cleanup():
     from optparse import OptionParser
