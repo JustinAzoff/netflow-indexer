@@ -63,6 +63,21 @@ Searching for an IP that does not exist in the index is very fast::
 
     real    0m0.268s
 
+Specifying output columns
+-------------------------
+
+`netflow-index-search` and `netflow-index-search-all` support a -c option which selects
+what columns should be output. By default only `time` is output. The other
+built-in field is `filename`.  Additional fields are made available by using
+the `pathregex` configuration option. Columns can be selected by using two
+methods::
+
+    -c time -c filename
+
+or::
+
+    -c time,filename
+
 Dumping data
 ------------
 

@@ -103,6 +103,19 @@ Searching the 30 day index takes only slightly longer and returns the same resul
 real    0m0.268s</pre>
 </div>
 </div>
+<div class="section" id="specifying-output-columns">
+<h2>Specifying output columns<a class="headerlink" href="#specifying-output-columns" title="Permalink to this headline">¶</a></h2>
+<p><cite>netflow-index-search</cite> and <cite>netflow-index-search-all</cite> support a -c option which selects
+what columns should be output. By default only <cite>time</cite> is output. The other
+built-in field is <cite>filename</cite>.  Additional fields are made available by using
+the <cite>pathregex</cite> configuration option. Columns can be selected by using two
+methods:</p>
+<div class="highlight-python"><pre>-c time -c filename</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>-c time,filename</pre>
+</div>
+</div>
 <div class="section" id="dumping-data">
 <h2>Dumping data<a class="headerlink" href="#dumping-data" title="Permalink to this headline">¶</a></h2>
 <p><cite>netflow-index-search</cite> and <cite>netflow-index-search-all</cite> support a -d option which
@@ -131,6 +144,7 @@ automatically runs the appropriate netflow tool for you:</p>
 <li><a class="reference external" href="#">Example Session</a><ul>
 <li><a class="reference external" href="#indexing-data">Indexing data</a></li>
 <li><a class="reference external" href="#searching-the-index">Searching the index</a></li>
+<li><a class="reference external" href="#specifying-output-columns">Specifying output columns</a></li>
 <li><a class="reference external" href="#dumping-data">Dumping data</a></li>
 </ul>
 </li>
