@@ -19,14 +19,22 @@ def do_index(indexer_type, cfg_data, files):
 def index():
     from optparse import OptionParser
     parser = OptionParser(usage = "usage: %prog indexer.ini")
+    parser.add_option("-f", "--full-index", dest="full", action="store_true", default=False,
+        help="Index all files matching allfileglob instead of fileglob")
 
     (options, args) = parser.parse_args()
     if not args:
         parser.print_help()
         return 1
+
+    the_glob = options.full and 'allfileglob' or 'fileglob'
+
     cfgdata = config.read_config(args[0])
 
-    files = sorted(glob.glob(cfgdata['fileglob']))
+    files = sorted(glob.glob(cfgdata[the_glob]))
+    if not files and not options.full:
+        print "No files matched 'fileglob', perhaps you need --full-index?"
+        return 1
 
     return do_index(cfgdata['indexer'], cfgdata, files)
 
