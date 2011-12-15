@@ -27,10 +27,10 @@ class FlowToolsSearcher(BaseSearcher):
         docs = self.search_ips(ips)
         if not dump:
             for doc in docs:
-                yield docid_to_searchresult(doc)
+                yield self.docid_to_searchresult(doc)
         else:
             for doc in docs:
                 for line in self.show(doc, ip_filter):
-                    yield line.rstrip()
+                    yield line
 
 searcher_class = FlowToolsSearcher
