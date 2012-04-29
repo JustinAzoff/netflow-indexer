@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys, os
 
 version = '0.1.25'
 long_description = ""
@@ -19,7 +18,10 @@ setup(name='netflowindexer',
       zip_safe=True,
       install_requires=[
           # -*- Extra requirements: -*-
-          "IPy"
+          "IPy",
+      ],
+      tests_require=[
+          "nose",
       ],
       entry_points = {
         'console_scripts': [
@@ -28,5 +30,6 @@ setup(name='netflowindexer',
             'netflow-index-search-all = netflowindexer.main:search_all',
             'netflow-index-cleanup    = netflowindexer.main:cleanup',
         ]
-      }
+      },
+      test_suite='nose.collector',
   )
