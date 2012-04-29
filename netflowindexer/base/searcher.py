@@ -7,7 +7,7 @@ from netflowindexer.util import serialize_ip, deserialize_ip
 
 class SearchResult(dict):
     def __init__(self, filename, time, **kwargs):
-        dict.__init__(self,kwargs)
+        dict.__init__(self, kwargs)
         self.__dict__ = self
         self.filename = filename
         self.time = time

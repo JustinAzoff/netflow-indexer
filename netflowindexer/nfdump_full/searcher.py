@@ -12,7 +12,7 @@ class NFDUMPFullSearcher(NFDUMPSearcher):
 
     def show(self, doc, filter, mode=None):
         command = ["nfdump", "-q"]
-        if mode=="pipe":
+        if mode == "pipe":
             command.extend(["-o", "pipe"])
         if self.need_ipv6:
             command.append("-6")

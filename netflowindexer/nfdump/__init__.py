@@ -1,2 +1,2 @@
-import indexer
-import searcher
+from netflowindexer.nfdump import indexer
+from netflowindexer.nfdump import searcher

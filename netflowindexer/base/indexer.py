@@ -71,7 +71,7 @@ class BaseIndexer:
             self.flush()
 
     def real_index_files(self, fns):
-        begin = time.time()
+        #begin = time.time()
         last_fn = fns[-1]
         database = self.open_db(last_fn)
         #if the last file is already indexed, nothing to do
