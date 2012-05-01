@@ -4,34 +4,41 @@ Example Session
 Indexing data
 -------------
 
-Tell the netflow indexer to index the current netflow files::
+Tell the netflow indexer to index the current netflow files
+For this example I deleted todays index so it can be re-created ::
 
-    justin@glenn:~$ netflow-index-update /data/nfdump_xap/nfdump.ini
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032900
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032901
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032902
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032903
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032904
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032905
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032906
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032907
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032908
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032909
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032910
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032911
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032912
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032913
-    * /data/nfsen/profiles/live/podium/nfcapd.2009032914
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291400 in 1.3 seconds
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291405 in 1.3 seconds
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291410 in 1.4 seconds
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291415 in 1.4 seconds
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291420 in 1.4 seconds
-    read /data/nfsen/profiles/live/podium/nfcapd.200903291425 in 1.3 seconds
-    loading data into xapian took 8.8 seconds
+    netflow@nf:~$ netflow-index-update  /data/nfdump_xap/nfdump.ini
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010000 in 2.4 seconds. 64501 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010005 in 2.5 seconds. 70830 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010010 in 3.8 seconds. 120925 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010015 in 2.7 seconds. 65676 ips.
+    ...
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010240 in 1.3 seconds. 54040 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010245 in 1.3 seconds. 52391 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010250 in 1.2 seconds. 49993 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205010255 in 1.2 seconds. 52161 ips.
+    Flush took 7.4 seconds.
+    ...
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011615 in 7.4 seconds. 159399 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011620 in 7.1 seconds. 155225 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011625 in 5.7 seconds. 110510 ips.
+    Flush took 28.9 seconds.
 
+Running the indexer when more data is available does an incremental update::
 
-Hours 00 through 13 are skipped because they are already fully indexed.
+    netflow@nf:~$ netflow-index-update  /data/nfdump_xap/nfdump.ini
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011630 in 3.7 seconds. 110257 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011635 in 3.7 seconds. 116742 ips.
+    read /data/nfsen/profiles/live/podium/nfcapd.201205011640 in 4.2 seconds. 107927 ips.
+    Flush took 7.0 seconds.
+    netflow@nf:~$ netflow-index-update  /data/nfdump_xap/nfdump.ini
+    netflow@nf:~$ 
+
+When performing an index for the first time you should use the `--full-index`
+or `-f` option to index all the data.  By default netflow-indexer only tries
+indexing files that match `fileglob`::
+
+    netflow-index-update /data/nfdump_xap/nfdump.ini --full-index
 
 Searching the index
 -------------------
@@ -55,7 +62,9 @@ Search the index for 2011-04-18::
     real    0m0.072s
 
 This output shows that it was present in the index in 11 5 minute chunks.
-Searching the 30 day index takes only slightly longer and returns the same results
+Searching the 30 day index takes only slightly longer and returns the same results::
+
+    remote@nf:~$ time netflow-index-search-all /data/nfdump_xap/nfdump.ini 59.124.163.60
 
 Searching for an IP that does not exist in the index is very fast::
 

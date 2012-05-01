@@ -1,25 +1,31 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; netflow-indexer v0.1 documentation</title>
+    <title>API &mdash; netflow-indexer 0.1.28 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '#',
-        VERSION:     '0.1',
-        COLLAPSE_MODINDEX: false,
+        URL_ROOT:    '',
+        VERSION:     '0.1.28',
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="netflow-indexer v0.1 documentation" href="index.html" />
+    <link rel="top" title="netflow-indexer 0.1.28 documentation" href="index.html" />
     <link rel="prev" title="Example Session" href="example_session.html" /> 
   </head>
   <body>
@@ -32,7 +38,7 @@
         <li class="right" >
           <a href="example_session.html" title="Example Session"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">netflow-indexer 0.1.28 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,7 +58,8 @@
 <dl class="method">
 <dt id="netflowindexer.main.Searcher.list_databases">
 <tt class="descname">list_databases</tt><big>(</big><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher.list_databases" title="Permalink to this definition">¶</a></dt>
-<dd>Return a list of database files in the &#8216;dbpath&#8217; directory</dd></dl>
+<dd><p>Return a list of database files in the &#8216;dbpath&#8217; directory</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="netflowindexer.main.Searcher.search">
@@ -62,12 +69,12 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><em>database</em> &#8211; The full path to a database file.</li>
-<li><em>ips</em> &#8211; a list of ip addresses to search for.</li>
-<li><em>dump</em> &#8211; if True dump the full netflow records, otherwise just the seen timeslots</li>
-<li><em>filter</em> &#8211; optional additional netflow search filter to be used when dump=True</li>
-<li><em>mode</em> &#8211; set to &#8216;pipe&#8217; to have nfdump list pipe delimited records</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>database</strong> &#8211; The full path to a database file.</li>
+<li><strong>ips</strong> &#8211; a list of ip addresses to search for.</li>
+<li><strong>dump</strong> &#8211; if True dump the full netflow records, otherwise just the seen timeslots</li>
+<li><strong>filter</strong> &#8211; optional additional netflow search filter to be used when dump=True</li>
+<li><strong>mode</strong> &#8211; set to &#8216;pipe&#8217; to have nfdump list pipe delimited records</li>
 </ul>
 </td>
 </tr>
@@ -78,7 +85,8 @@
 <dl class="method">
 <dt id="netflowindexer.main.Searcher.search_all">
 <tt class="descname">search_all</tt><big>(</big><em>ips</em>, <em>dump=False</em>, <em>filter=None</em>, <em>mode=None</em><big>)</big><a class="headerlink" href="#netflowindexer.main.Searcher.search_all" title="Permalink to this definition">¶</a></dt>
-<dd>Search all database files. Takes the same parameters as <tt class="xref docutils literal"><span class="pre">search()</span></tt></dd></dl>
+<dd><p>Search all database files. Takes the same parameters as <tt class="xref py py-func docutils literal"><span class="pre">search()</span></tt></p>
+</dd></dl>
 
 </dd></dl>
 
@@ -86,47 +94,49 @@
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>The <cite>Searcher</cite> class can be used to search for records:</p>
-<div class="highlight-python"><pre>from netflowindexer import Searcher
-s = Searcher("/spare/tmp/netflow/nfdump.ini")
-print s.list_databases()
-['/spare/tmp/netflow/20110408.db']
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">netflowindexer</span> <span class="kn">import</span> <span class="n">Searcher</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Searcher</span><span class="p">(</span><span class="s">&quot;/spare/tmp/netflow/nfdump.ini&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">list_databases</span><span class="p">()</span>
+<span class="go">[&#39;/spare/tmp/netflow/20110408.db&#39;]</span>
 
-for record in s.search_all(['8.8.8.8']):
-    print record
-2011-04-08 15:00:00
-2011-04-08 15:05:00
-2011-04-08 15:10:00
-2011-04-08 15:15:00
-2011-04-08 15:20:00
-...
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">search_all</span><span class="p">([</span><span class="s">&#39;8.8.8.8&#39;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">record</span>
+<span class="go">2011-04-08 15:00:00</span>
+<span class="go">2011-04-08 15:05:00</span>
+<span class="go">2011-04-08 15:10:00</span>
+<span class="go">2011-04-08 15:15:00</span>
+<span class="go">2011-04-08 15:20:00</span>
+<span class="gp">...</span>
 
-for record in s.search_all(['8.8.8.8'], dump=True):
-    print record
-2011-04-08 14:59:32.696     0.000 UDP     111.222.121.54:53241 -&gt;          8.8.8.8:53           2      138     1
-2011-04-08 14:59:32.708     0.028 UDP            8.8.8.8:53    -&gt;   111.222.121.54:53241        2      266     1
-2011-04-08 14:59:38.416     0.000 UDP     111.222.121.127:51528 -&gt;          8.8.8.8:53          1       77     1
-2011-04-08 14:59:38.396     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:51528       1      165     1
-2011-04-08 14:59:38.400     0.000 UDP     111.222.121.127:60043 -&gt;          8.8.8.8:53          1       77     1
-2011-04-08 14:59:38.368     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:60043       1      151     1
-2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:60128 -&gt;          8.8.8.8:53           1       85     1
-2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:63357 -&gt;          8.8.8.8:53           1       86     1</pre>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">search_all</span><span class="p">([</span><span class="s">&#39;8.8.8.8&#39;</span><span class="p">],</span> <span class="n">dump</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">record</span>
+<span class="go">2011-04-08 14:59:32.696     0.000 UDP     111.222.121.54:53241 -&gt;          8.8.8.8:53           2      138     1</span>
+<span class="go">2011-04-08 14:59:32.708     0.028 UDP            8.8.8.8:53    -&gt;   111.222.121.54:53241        2      266     1</span>
+<span class="go">2011-04-08 14:59:38.416     0.000 UDP     111.222.121.127:51528 -&gt;          8.8.8.8:53          1       77     1</span>
+<span class="go">2011-04-08 14:59:38.396     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:51528       1      165     1</span>
+<span class="go">2011-04-08 14:59:38.400     0.000 UDP     111.222.121.127:60043 -&gt;          8.8.8.8:53          1       77     1</span>
+<span class="go">2011-04-08 14:59:38.368     0.000 UDP            8.8.8.8:53    -&gt;   111.222.121.127:60043       1      151     1</span>
+<span class="go">2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:60128 -&gt;          8.8.8.8:53           1       85     1</span>
+<span class="go">2011-04-08 14:59:41.516     0.000 UDP     111.222.121.54:63357 -&gt;          8.8.8.8:53           1       86     1</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="file-metadata">
 <h2>File metadata<a class="headerlink" href="#file-metadata" title="Permalink to this headline">¶</a></h2>
 <p>Search results are actually an object. str() will return simply the time of the
 matching flow records, but there are other fields available:</p>
-<div class="highlight-python"><pre>for record in s.search_all(['8.8.8.8']):
-    print repr(record)
-SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
-SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)
-SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">search_all</span><span class="p">([</span><span class="s">&#39;8.8.8.8&#39;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)</span>
+<span class="go">SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)</span>
+<span class="go">SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)</span>
 
-for record in s.search_all(['8.8.8.8']):
-    print record.time, record.profile
-2011-04-08 15:00:00 tmp
-2011-04-08 15:05:00 tmp
-2011-04-08 15:10:00 tmp</pre>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">search_all</span><span class="p">([</span><span class="s">&#39;8.8.8.8&#39;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">record</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">profile</span>
+<span class="go">2011-04-08 15:00:00 tmp</span>
+<span class="go">2011-04-08 15:05:00 tmp</span>
+<span class="go">2011-04-08 15:10:00 tmp</span>
+</pre></div>
 </div>
 <p>These field extractions are done via the <cite>pathregex</cite> configuration option.</p>
 </div>
@@ -134,24 +144,25 @@ for record in s.search_all(['8.8.8.8']):
 <h2>Searching with pynfdump<a class="headerlink" href="#searching-with-pynfdump" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://packages.python.org/pynfdump/">pynfdump</a> is another module I have written.</p>
 <p>You can easily use netflow indexer with pynfdump:</p>
-<div class="highlight-python"><pre>from netflowindexer import Searcher
-import pynfdump
-d=pynfdump.Dumper()
-s = Searcher("/spare/tmp/netflow/nfdump.ini")
-records = s.search_all(["8.8.8.8"], dump=True, filter='dst port 53', mode='pipe')
-for rec in d.parse_search(records):
-    print rec['dstip'], rec['bytes']
-8.8.8.8 138
-8.8.8.8 77
-8.8.8.8 77
-8.8.8.8 85
-8.8.8.8 86
-8.8.8.8 85
-8.8.8.8 86
-8.8.8.8 86
-8.8.8.8 55
-8.8.8.8 55
-8.8.8.8 68</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">netflowindexer</span> <span class="kn">import</span> <span class="n">Searcher</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pynfdump</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">pynfdump</span><span class="o">.</span><span class="n">Dumper</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Searcher</span><span class="p">(</span><span class="s">&quot;/spare/tmp/netflow/nfdump.ini&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search_all</span><span class="p">([</span><span class="s">&quot;8.8.8.8&quot;</span><span class="p">],</span> <span class="n">dump</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s">&#39;dst port 53&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;pipe&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">parse_search</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">rec</span><span class="p">[</span><span class="s">&#39;dstip&#39;</span><span class="p">],</span> <span class="n">rec</span><span class="p">[</span><span class="s">&#39;bytes&#39;</span><span class="p">]</span>
+<span class="go">8.8.8.8 138</span>
+<span class="go">8.8.8.8 77</span>
+<span class="go">8.8.8.8 77</span>
+<span class="go">8.8.8.8 85</span>
+<span class="go">8.8.8.8 86</span>
+<span class="go">8.8.8.8 85</span>
+<span class="go">8.8.8.8 86</span>
+<span class="go">8.8.8.8 86</span>
+<span class="go">8.8.8.8 55</span>
+<span class="go">8.8.8.8 55</span>
+<span class="go">8.8.8.8 68</span>
+</pre></div>
 </div>
 <p>The above example used netflowindexer to find all flows to 8.8.8.8, then used
 nfdump to filter it by &#8216;dst port 53&#8217;, and finally handed it off to pynfdump for
@@ -165,38 +176,38 @@ parsing.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="#">API</a><ul>
-<li><a class="reference external" href="#searching-with-the-api">Searching with the API</a></li>
-<li><a class="reference external" href="#example">Example</a></li>
-<li><a class="reference external" href="#file-metadata">File metadata</a></li>
-<li><a class="reference external" href="#searching-with-pynfdump">Searching with pynfdump</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#searching-with-the-api">Searching with the API</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#file-metadata">File metadata</a></li>
+<li><a class="reference internal" href="#searching-with-pynfdump">Searching with pynfdump</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="example_session.html"
-                                  title="previous chapter">Example Session</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/api.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="example_session.html"
+                        title="previous chapter">Example Session</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -210,12 +221,12 @@ parsing.</p>
         <li class="right" >
           <a href="example_session.html" title="Example Session"
              >previous</a> |</li>
-        <li><a href="index.html">netflow-indexer v0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">netflow-indexer 0.1.28 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2011, Justin Azoff.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+        &copy; Copyright 2012, Justin Azoff.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

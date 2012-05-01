@@ -12,13 +12,13 @@ Example
 -------
 The `Searcher` class can be used to search for records::
 
-    from netflowindexer import Searcher
-    s = Searcher("/spare/tmp/netflow/nfdump.ini")
-    print s.list_databases()
+    >>> from netflowindexer import Searcher
+    >>> s = Searcher("/spare/tmp/netflow/nfdump.ini")
+    >>> print s.list_databases()
     ['/spare/tmp/netflow/20110408.db']
 
-    for record in s.search_all(['8.8.8.8']):
-        print record
+    >>> for record in s.search_all(['8.8.8.8']):
+    ...     print record
     2011-04-08 15:00:00
     2011-04-08 15:05:00
     2011-04-08 15:10:00
@@ -26,8 +26,8 @@ The `Searcher` class can be used to search for records::
     2011-04-08 15:20:00
     ...
 
-    for record in s.search_all(['8.8.8.8'], dump=True):
-        print record
+    >>> for record in s.search_all(['8.8.8.8'], dump=True):
+    ...     print record
     2011-04-08 14:59:32.696     0.000 UDP     111.222.121.54:53241 ->          8.8.8.8:53           2      138     1
     2011-04-08 14:59:32.708     0.028 UDP            8.8.8.8:53    ->   111.222.121.54:53241        2      266     1
     2011-04-08 14:59:38.416     0.000 UDP     111.222.121.127:51528 ->          8.8.8.8:53          1       77     1
@@ -42,14 +42,14 @@ File metadata
 Search results are actually an object. str() will return simply the time of the
 matching flow records, but there are other fields available::
 
-    for record in s.search_all(['8.8.8.8']):
-        print repr(record)
+    >>> for record in s.search_all(['8.8.8.8']):
+    ...     print repr(record)
     SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081500, time=2011-04-08 15:00:00, profile=tmp)
     SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081505, time=2011-04-08 15:05:00, profile=tmp)
     SearchResult(filename=/spare/tmp/netflow/nfcapd.201104081510, time=2011-04-08 15:10:00, profile=tmp)
 
-    for record in s.search_all(['8.8.8.8']):
-        print record.time, record.profile
+    >>> for record in s.search_all(['8.8.8.8']):
+    ...     print record.time, record.profile
     2011-04-08 15:00:00 tmp
     2011-04-08 15:05:00 tmp
     2011-04-08 15:10:00 tmp
@@ -63,13 +63,13 @@ Searching with pynfdump
 
 You can easily use netflow indexer with pynfdump::
 
-    from netflowindexer import Searcher
-    import pynfdump
-    d=pynfdump.Dumper()
-    s = Searcher("/spare/tmp/netflow/nfdump.ini")
-    records = s.search_all(["8.8.8.8"], dump=True, filter='dst port 53', mode='pipe')
-    for rec in d.parse_search(records):
-        print rec['dstip'], rec['bytes']
+    >>> from netflowindexer import Searcher
+    >>> import pynfdump
+    >>> d=pynfdump.Dumper()
+    >>> s = Searcher("/spare/tmp/netflow/nfdump.ini")
+    >>> records = s.search_all(["8.8.8.8"], dump=True, filter='dst port 53', mode='pipe')
+    >>> for rec in d.parse_search(records):
+    ...     print rec['dstip'], rec['bytes']
     8.8.8.8 138
     8.8.8.8 77
     8.8.8.8 77
