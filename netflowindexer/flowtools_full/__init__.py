@@ -1,2 +1,2 @@
-import indexer
-import searcher
+from netflowindexer.flowtools_full import indexer
+from netflowindexer.flowtools_full import searcher
