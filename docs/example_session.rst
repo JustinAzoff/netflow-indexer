@@ -64,13 +64,14 @@ Search the index for 2011-04-18::
 This output shows that it was present in the index in 11 5 minute chunks.
 Searching the 30 day index takes only slightly longer and returns the same results::
 
-    remote@nf:~$ time netflow-index-search-all /data/nfdump_xap/nfdump.ini 59.124.163.60
+    remote@nf:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 59.124.163.60
 
 Searching for an IP that does not exist in the index is very fast::
 
-    remote@nf:~$ netflow-index-search-all /data/nfdump_xap/nfdump.ini 9.254.9.254
+    remote@nf:~$ time netflow-index-search-all /data/nfdump_xap/nfdump.ini 9.254.9.254
 
-    real    0m0.268s
+    real    0m0.097s
+
 
 Specifying output columns
 -------------------------
