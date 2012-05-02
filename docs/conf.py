@@ -191,4 +191,24 @@ latex_documents = [
 #latex_appendices = []
 
 # If false, no module index is generated.
-#latex_use_modindex = True
+latex_use_modindex = False
+
+latex_show_urls = "footnote"
+
+#remove blank pages everywhere.
+latex_elements = {
+    'classoptions': ',openany,oneside',
+     'babel': '\\usepackage[english]{babel}',
+}
+
+# -- Options for manual page output --------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [
+    ('index', 'netflow-indexer', u'netflow-indexer documentation',
+     [u'Justin Azoff'], 1)
+]
+
+# If true, show URL addresses after external links.
+#man_show_urls = False
