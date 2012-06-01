@@ -17,6 +17,7 @@ Contents:
    configuration
    example_session
    api
+   sites
 
 Indices and tables
 ==================
