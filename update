@@ -1,0 +1,3 @@
+cp ~/projects/netflow-indexer/docs/_build/html/* .
+cp ~/projects/netflow-indexer/docs/_build/html/_static/* _static
+cp ~/projects/netflow-indexer/docs/_build/html/_sources/* _sources
