@@ -8,7 +8,7 @@ class NFDUMPIndexer(BaseIndexer):
     def get_bytes(self, fn):
         cmd = ["nfdump", "-q", "-o", "pipe", "-A", "srcip,dstip", "-a", "-r", fn]
         ips = set()
-        update = ips.update
+        add = ips.add
         for line in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout:
             parts = line.split("|")
             if parts[6:9] != ['0','0','0']: #ipv6
@@ -17,7 +17,8 @@ class NFDUMPIndexer(BaseIndexer):
             else:
                 sa = pack(">L", int(parts[9]))
                 da = pack(">L", int(parts[14]))
-            update([sa,da])
+            add(sa)
+            add(da)
         return ips
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
