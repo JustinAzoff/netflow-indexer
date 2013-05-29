@@ -14,7 +14,9 @@ def read_config(fn):
         'hour':     "%02d" % now.hour,
     }
     c = ConfigParser.ConfigParser(defaults=defaults)
-    c.read(fn)
+    f = open(fn)
+    c.readfp(f)
+    f.close()
     config = dict(c.items("nfi"))
     if 'pathregex' in config:
         if ':' in config['pathregex']:
