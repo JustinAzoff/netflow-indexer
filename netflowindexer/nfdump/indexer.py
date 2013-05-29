@@ -11,6 +11,8 @@ class NFDUMPIndexer(BaseIndexer):
         add = ips.add
         for line in subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout:
             parts = line.split("|")
+            if len(parts) != 24:
+                continue
             if parts[6:9] != ['0','0','0']: #ipv6
                 sa = pack(">LLLL", int(parts[6]),  int(parts[7]),  int(parts[8]),  int(parts[9]))
                 da = pack(">LLLL", int(parts[11]), int(parts[12]), int(parts[13]), int(parts[14]))
