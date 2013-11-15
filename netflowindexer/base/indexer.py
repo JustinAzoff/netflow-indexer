@@ -12,6 +12,7 @@ class BaseIndexer:
         self.db_fn = None
         self.dirty = False
         self.doc_count = 0
+        self.cfg_data = cfg_data
         self.out_dir = cfg_data['dbpath']
         self.flowpath = cfg_data['flowpath']
 
