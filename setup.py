@@ -5,7 +5,7 @@ long_description = ""
 
 setup(name='netflowindexer',
       version=version,
-      description="Index netflow",
+      description="Netflow Indexer",
       long_description=long_description,
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='netflow search index',
