@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.29'
+version = '0.1.30'
 long_description = ""
 
 setup(name='netflowindexer',
