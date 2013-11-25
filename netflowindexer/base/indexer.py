@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 import xapian
 import itertools
 import time
@@ -60,6 +61,7 @@ class BaseIndexer:
         st = time.time()
         self.database.flush()
         print "Flush took %0.1f seconds." % (time.time() - st)
+        sys.stdout.flush()
 
     def maybe_flush(self):
         self.doc_count += 1
@@ -84,12 +86,14 @@ class BaseIndexer:
             st = time.time()
             ips = self.get_bytes(fns[0])
             print "read %s in %0.1f seconds. %d ips." % (fns[0], time.time() - st, len(ips))
+            sys.stdout.flush()
         else:
             ips = set()
             for fn in fns:
                 st = time.time()
                 ips.update(self.get_bytes(fn))
                 print "read %s in %0.1f seconds. %d ips." % (fn, time.time() - st, len(ips))
+                sys.stdout.flush()
 
         doc = xapian.Document()
 
