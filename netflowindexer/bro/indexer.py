@@ -9,7 +9,7 @@ class BroIndexer(BaseIndexer):
         ip_columns = map(int, self.cfg_data["ip_columns"].split(","))
         ips = set()
         add = ips.add
-        f = gzip.open(fn):
+        f = gzip.open(fn)
         for line in f:
             if line.startswith("#"): continue
             parts = line.split("\t")
