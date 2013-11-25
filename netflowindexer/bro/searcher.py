@@ -18,10 +18,11 @@ class BroSearcher(BaseSearcher):
         inner = "|".join(ips)
         rex = re.compile("\t(%s)\t" % inner)
 
-        with gzip.open(doc) as f:
-            for line in f:
-                if rex.search(line):
-                    yield line.rstrip()
+        f = gzip.open(doc)
+        for line in f:
+            if rex.search(line):
+                yield line.rstrip()
+        f.close()
 
     def search(self, ips, dump=False, filter=None, mode=None):
         docs = self.search_ips(ips)

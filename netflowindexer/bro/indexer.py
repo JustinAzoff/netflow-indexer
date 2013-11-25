@@ -9,12 +9,13 @@ class BroIndexer(BaseIndexer):
         ip_columns = map(int, self.cfg_data["ip_columns"].split(","))
         ips = set()
         add = ips.add
-        with gzip.open(fn) as f:
-            for line in f:
-                if line.startswith("#"): continue
-                parts = line.split("\t")
-                for col in ip_columns:
-                    add(parts[col])
+        f = gzip.open(fn):
+        for line in f:
+            if line.startswith("#"): continue
+            parts = line.split("\t")
+            for col in ip_columns:
+                add(parts[col])
+        f.close()
         return ips
 
     def fn_to_db(self, fn):
