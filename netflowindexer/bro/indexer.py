@@ -12,6 +12,8 @@ class BroIndexer(BaseIndexer):
         for line in subprocess.Popen(["zcat", fn], stdout=subprocess.PIPE).stdout:
             if line.startswith("#"): continue
             parts = line.split("\t")
+            if len(parts) < ip_columns[-1]:
+                continue
             for col in ip_columns:
                 add(parts[col])
         return ips
