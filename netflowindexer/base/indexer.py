@@ -33,7 +33,8 @@ class BaseIndexer:
 
     def get_bytes(self, fn):
         ips = self.get_ips(fn)
-        return map(serialize_ip, ips)
+        bytes = map(serialize_ip, ips)
+        return filter(None, bytes)
 
     def fn_to_db(self, fn):
         """turn /data/nfsen/profiles/live/podium/nfcapd.200903011030 into 20090301.db"""
