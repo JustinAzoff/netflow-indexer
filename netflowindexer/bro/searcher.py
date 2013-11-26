@@ -1,4 +1,4 @@
-import gzip
+import subprocess
 import os
 from netflowindexer.base.searcher import BaseSearcher
 from netflowindexer import util
@@ -18,11 +18,9 @@ class BroSearcher(BaseSearcher):
         inner = "|".join(ips)
         rex = re.compile("\t(%s)\t" % inner)
 
-        f = gzip.open(doc)
-        for line in f:
+        for line in subprocess.Popen(["zcat", doc], stdout=subprocess.PIPE).stdout:
             if rex.search(line):
                 yield line.rstrip()
-        f.close()
 
     def search(self, ips, dump=False, filter=None, mode=None):
         docs = self.search_ips(ips)

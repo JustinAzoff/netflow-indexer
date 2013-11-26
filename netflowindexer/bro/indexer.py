@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-import gzip
+import subprocess
 
 from netflowindexer.base.indexer import BaseIndexer
 
@@ -9,13 +9,11 @@ class BroIndexer(BaseIndexer):
         ip_columns = map(int, self.cfg_data["ip_columns"].split(","))
         ips = set()
         add = ips.add
-        f = gzip.open(fn)
-        for line in f:
+        for line in subprocess.Popen(["zcat", fn], stdout=subprocess.PIPE).stdout:
             if line.startswith("#"): continue
             parts = line.split("\t")
             for col in ip_columns:
                 add(parts[col])
-        f.close()
         return ips
 
     def fn_to_db(self, fn):
