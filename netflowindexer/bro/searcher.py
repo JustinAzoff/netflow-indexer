@@ -27,9 +27,16 @@ class BroSearcher(BaseSearcher):
         if not dump:
             for doc in docs:
                 yield self.docid_to_searchresult(doc)
-        else:
-            for doc in docs:
-                for line in self.show(doc, ips):
-                    yield line
+            return
+
+        all_ips = []
+        for ip in ips:
+            if '/' in ip:
+                all_ips.extend(map(util.deserialize_ip, self.expand_netmask(ip)))
+            else:
+                all_ips.append(ip)
+        for doc in docs:
+            for line in self.show(doc, all_ips):
+                yield line
 
 searcher_class = BroSearcher
