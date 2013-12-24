@@ -29,14 +29,14 @@ def index():
 
     the_glob = options.full and 'allfileglob' or 'fileglob'
 
-    cfgdata = config.read_config(args[0])
+    cfg_data = config.read_config(args[0])
 
-    files = sorted(glob.glob(cfgdata[the_glob]))
+    files = sorted(glob.glob(cfg_data[the_glob]))
     if not files and not options.full:
         print "No files matched 'fileglob', perhaps you need --full-index?"
         return 1
 
-    return do_index(cfgdata['indexer'], cfgdata, files)
+    return do_index(cfg_data['indexer'], cfg_data, files)
 
 def get_searcher(indexer_type):
     mod = __import__('netflowindexer.%s' % indexer_type)
@@ -47,12 +47,12 @@ def get_searcher(indexer_type):
 class Searcher:
     """Create a new searcher instance.  Call with the path to the ini file"""
     def __init__(self, ini_file):
-        self.cfgdata = config.read_config(ini_file)
-        self.searcher = get_searcher(self.cfgdata['indexer'])
+        self.cfg_data = config.read_config(ini_file)
+        self.searcher = get_searcher(self.cfg_data['indexer'])
 
     def list_databases(self):
         """Return a list of database files in the 'dbpath' directory"""
-        return sorted(glob.glob(self.cfgdata['dbpath'] + "/*.db"))
+        return sorted(glob.glob(self.cfg_data['dbpath'] + "/*.db"))
 
     def search(self, database, ips, dump=False, filter=None, mode=None):
         """Search a specific database file
@@ -64,7 +64,7 @@ class Searcher:
         :param mode: set to 'pipe' to have nfdump list pipe delimited records
         """
         s = self.searcher(database)
-        s.cfgdata = self.cfgdata
+        s.cfg_data = self.cfg_data
         for rec in s.search(ips, dump, filter, mode):
             yield rec
 
@@ -140,20 +140,20 @@ def cleanup():
     if len(args) != 1:
         parser.print_help()
         return 1
-    cfgdata = config.read_config(args[0])
+    cfg_data = config.read_config(args[0])
 
-    indexer = get_indexer(cfgdata['indexer'])
-    i = indexer(cfgdata)
+    indexer = get_indexer(cfg_data['indexer'])
+    i = indexer(cfg_data)
 
-    databases = sorted([x for x in os.listdir(cfgdata['dbpath']) if x.endswith(".db")])
+    databases = sorted([x for x in os.listdir(cfg_data['dbpath']) if x.endswith(".db")])
 
-    data_files = glob.glob(cfgdata['allfileglob'])
+    data_files = glob.glob(cfg_data['allfileglob'])
     needed_databases = set([i.fn_to_db(f) for f in data_files])
 
     to_delete = [x for x in databases if x not in needed_databases]
 
     for x in to_delete:
-        full_path = os.path.join(cfgdata['dbpath'], x)
+        full_path = os.path.join(cfg_data['dbpath'], x)
         if options.delete:
             print "Deleting", full_path
             shutil.rmtree(full_path)

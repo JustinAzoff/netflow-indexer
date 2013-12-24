@@ -86,6 +86,6 @@ class BaseSearcher:
         """
         time = self.docid_to_date(fn)
         path_info = {}
-        if 'pathregex' in self.cfgdata:
-            path_info = self.cfgdata['pathregex'].search(fn).groupdict()
+        if 'pathregex' in self.cfg_data:
+            path_info = self.cfg_data['pathregex'].search(fn).groupdict()
         return SearchResult(fn, time, **path_info)
