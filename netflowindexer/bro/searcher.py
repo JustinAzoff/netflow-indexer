@@ -3,6 +3,7 @@ import os
 from netflowindexer.base.searcher import BaseSearcher
 from netflowindexer import util
 import re
+import datetime
 
 class BroSearcher(BaseSearcher):
     def docid_to_date(self, fn):
@@ -13,6 +14,11 @@ class BroSearcher(BaseSearcher):
         t = "%s.%s" % (d, h)
         return util.strptime(t,'%Y-%m-%d.%H')
 
+    def fix_ts(self, line):
+        ts, rest = line.split("\t", 1)
+        ts = datetime.datetime.fromtimestamp(float(ts)).isoformat()
+        return '\t'.join((ts, rest))
+
     def show(self, doc, ips):
         ips = [ip.replace(".", "\.") for ip in ips]
         inner = "|".join(ips)
@@ -20,7 +26,7 @@ class BroSearcher(BaseSearcher):
 
         for line in subprocess.Popen(["zcat", doc], stdout=subprocess.PIPE).stdout:
             if rex.search(line):
-                yield line.rstrip()
+                yield self.fix_ts(line.rstrip())
 
     def search(self, ips, dump=False, filter=None, mode=None):
         docs = self.search_ips(ips)
