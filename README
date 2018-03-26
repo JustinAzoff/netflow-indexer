@@ -5,3 +5,7 @@ actual data, just what IP addresses are seen in which data file.  It is used in
 a similar fashion as a bloom filter.
 
 See the full documentation here: http://justinazoff.github.com/netflow-indexer/
+
+netflow-indexer works fine and has no real issues that I am aware of, however 
+Development effort has since switched over to https://github.com/justinazoff/flow-indexer which
+uses go+leveldb instead of python+xapian and is much faster.
